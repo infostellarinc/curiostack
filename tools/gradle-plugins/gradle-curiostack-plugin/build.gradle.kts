@@ -85,25 +85,25 @@ dependencies {
 gradlePlugin {
     plugins {
         register("buildCache") {
-            id = "org.curioswitch.gradle-gcloud-build-cache-plugin"
+            id = "com.infostellarinc.curiostack.gradle-gcloud-build-cache-plugin"
             displayName = "Gradle Google Cloud Storage Build Cache Plugin"
             description = "Plugin for using GCP Cloud Storage as the backend for Gradle's build cache"
             implementationClass = "org.curioswitch.gradle.plugins.gcloud.GcloudBuildCachePlugin"
         }
         register("ci") {
-            id = "org.curioswitch.gradle-curio-generic-ci-plugin"
+            id = "com.infostellarinc.curiostack.gradle-curio-generic-ci-plugin"
             displayName = "Gradle Curio CI Plugin"
             description = "Plugin which adds a monorepo aware continuousBuild task for efficiently building on continuous integration"
             implementationClass = "org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin"
         }
         register("codelabs") {
-            id = "org.curioswitch.gradle-codelabs-plugin"
+            id = "com.infostellarinc.curiostack.gradle-codelabs-plugin"
             displayName = "Gradle Codelabs Plugin"
             description = "Plugin to build codelabs using claat"
             implementationClass = "org.curioswitch.gradle.plugins.codelabs.CodelabsPlugin"
         }
         register("curiostack") {
-            id = "org.curioswitch.gradle-curiostack-plugin"
+            id = "com.infostellarinc.curiostack.gradle-curiostack-plugin"
             displayName = "Gradle Curiostack Plugin"
             description = "A highly opinionated plugin for setting up a gradle codebase " +
                     "using Curiostack conventions. Defines shared configuration and " +
@@ -112,55 +112,55 @@ gradlePlugin {
             implementationClass = "org.curioswitch.gradle.plugins.curiostack.CuriostackPlugin"
         }
         register("database") {
-            id = "org.curioswitch.gradle-curio-database-plugin"
+            id = "com.infostellarinc.curiostack.gradle-curio-database-plugin"
             displayName = "Gradle Database Plugin"
             description = "Plugin to simplify defining database schema using flyway and other utilities for dealing with databases"
             implementationClass = "org.curioswitch.gradle.plugins.gcloud.CurioDatabasePlugin"
         }
         register("gcloud") {
-            id = "org.curioswitch.gradle-gcloud-plugin"
+            id = "com.infostellarinc.curiostack.gradle-gcloud-plugin"
             displayName = "Gradle Gcloud Plugin"
             description = "Plugin for interacting with the gcloud SDK and caching of tools using cloud storage"
             implementationClass = "org.curioswitch.gradle.plugins.gcloud.GcloudPlugin"
         }
         register("grpcApi") {
-            id = "org.curioswitch.gradle-grpc-api-plugin"
+            id = "com.infostellarinc.curiostack.gradle-grpc-api-plugin"
             displayName = "Gradle gRPC API Plugin"
             description = "Plugin to reduce boilerplate for projects that define a gRPC API and adds support for gRPC-Web"
             implementationClass = "org.curioswitch.gradle.plugins.grpcapi.GrpcApiPlugin"
         }
         register("node") {
-            id = "org.curioswitch.gradle-node-plugin"
+            id = "com.infostellarinc.curiostack.gradle-node-plugin"
             displayName = "Gradle Node Plugin"
             description = "Plugin for invoking NodeJS"
             implementationClass = "org.curioswitch.gradle.plugins.nodejs.NodePlugin"
         }
         register("pulumi") {
-            id = "org.curioswitch.gradle-pulumi-plugin"
+            id = "com.infostellarinc.curiostack.gradle-pulumi-plugin"
             displayName = "Gradle Pulumi Plugin"
             description = "Plugin for invoking Pulumi"
             implementationClass = "org.curioswitch.gradle.plugins.pulumi.PulumiPlugin"
         }
         register("server") {
-            id = "org.curioswitch.gradle-curio-server-plugin"
+            id = "com.infostellarinc.curiostack.gradle-curio-server-plugin"
             displayName = "Gradle Curio Server Plugin"
             description = "Plugin for building and deploying container images for Curiostack servers"
             implementationClass = "org.curioswitch.gradle.plugins.curioserver.CurioServerPlugin"
         }
         register("staticSite") {
-            id = "org.curioswitch.gradle-static-site-plugin"
+            id = "com.infostellarinc.curiostack.gradle-static-site-plugin"
             displayName = "Gradle Static Site Plugin"
             description = "Plugin for deploying static sites to app engine and firebase"
             implementationClass = "org.curioswitch.gradle.plugins.staticsite.StaticSitePlugin"
         }
         register("terraform") {
-            id = "org.curioswitch.gradle-terraform-plugin"
+            id = "com.infostellarinc.curiostack.gradle-terraform-plugin"
             displayName = "Gradle Terraform Plugin"
             description = "Plugin for executing terraform, including extra features such as configuration templating and yaml config support"
             implementationClass = "org.curioswitch.gradle.plugins.terraform.TerraformPlugin"
         }
         register("web") {
-            id = "org.curioswitch.gradle-curio-web-plugin"
+            id = "com.infostellarinc.curiostack.gradle-curio-web-plugin"
             displayName = "Gradle Curio Web Plugin"
             description = "Plugin for building web client code for packaging into a server"
             implementationClass = "org.curioswitch.gradle.plugins.curioweb.CurioWebPlugin"

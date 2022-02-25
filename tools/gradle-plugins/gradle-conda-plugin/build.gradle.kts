@@ -44,13 +44,13 @@ dependencies {
 gradlePlugin {
     plugins {
         register("conda") {
-            id = "org.curioswitch.gradle-conda-plugin"
+            id = "com.infostellarinc.curiostack.gradle-conda-plugin"
             displayName = "Gradle Miniconda Plugin"
             description = "Plugin for setting up a Miniconda environment"
             implementationClass = "org.curioswitch.gradle.conda.CondaPlugin"
         }
         register("buildenv") {
-            id = "org.curioswitch.gradle-conda-buildenv-plugin"
+            id = "com.infostellarinc.curiostack.gradle-conda-buildenv-plugin"
             displayName = "Gradle Conda Build Environment"
             description = "Plugin for configuring the Miniconda environment for builds, downloading toolchains such as C++"
             implementationClass = "org.curioswitch.gradle.conda.CondaBuildEnvPlugin"

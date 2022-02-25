@@ -468,7 +468,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     Object bomDependency =
         isCuriostack(project)
             ? project.getDependencies().project(ImmutableMap.of("path", ":tools:curiostack-bom"))
-            : "org.curioswitch.curiostack:curiostack-bom:"
+            : "com.infostellarinc.curiostack:curiostack-bom:"
                 + ToolDependencies.getBomVersion(project);
 
     var platformDependency = project.getDependencies().platform(bomDependency);
@@ -829,7 +829,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     dependencies.add(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME, "com.google.code.findbugs:jsr305");
     dependencies.add(
         JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-        "org.curioswitch.curiostack:curio-testing-framework");
+        "com.infostellarinc.curiostack:curio-testing-framework");
     dependencies.add(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME, "org.assertj:assertj-core");
     dependencies.add(
         JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME, "org.awaitility:awaitility");
