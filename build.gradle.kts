@@ -37,7 +37,7 @@ nexusPublishing {
 }
 
 allprojects {
-    project.group = "com.infostellarinc.curiostack"
+    project.group = "com.stellarstation.curiostack"
 
     plugins.withId("java") {
         project.tasks.register<DependencyReportTask>("allDeps")

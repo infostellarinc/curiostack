@@ -41,7 +41,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("curioRelease") {
-            id = "com.infostellarinc.curiostack.gradle-release-plugin"
+            id = "com.stellarstation.curiostack.gradle-release-plugin"
             displayName = "Gradle Release Plugin"
             description = "An opinionated plugin for setting release version for CurioStack"
             implementationClass = "org.curioswitch.gradle.release.ReleasePlugin"

@@ -51,7 +51,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("golang") {
-            id = "com.infostellarinc.curiostack.gradle-golang-plugin"
+            id = "com.stellarstation.curiostack.gradle-golang-plugin"
             displayName = "Gradle Golang Plugin"
             description = "A simple and fast plugin for building golang binaries with Gradle."
             implementationClass = "org.curioswitch.gradle.golang.GolangPlugin"

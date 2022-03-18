@@ -44,7 +44,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("tool-downloader") {
-            id = "com.infostellarinc.curiostack.gradle-tool-downloader-plugin"
+            id = "com.stellarstation.curiostack.gradle-tool-downloader-plugin"
             displayName = "Gradle Tool Downloader Plugin"
             description = "Plugin for automatically downloading various tools needed by codebases"
             implementationClass = "org.curioswitch.gradle.tooldownloader.ToolDownloaderPlugin"

@@ -44,7 +44,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("protobuf") {
-            id = "com.infostellarinc.curiostack.gradle-protobuf-plugin"
+            id = "com.stellarstation.curiostack.gradle-protobuf-plugin"
             displayName = "Gradle Protobuf Plugin"
             description = "A modern protobuf plugin using Gradle's latest features."
             implementationClass = "org.curioswitch.gradle.protobuf.ProtobufPlugin"
