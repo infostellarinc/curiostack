@@ -30,6 +30,9 @@ pluginManagement {
             if (requested.id.id == "org.curioswitch.gradle-curiostack-plugin") {
                 useModule("org.curioswitch.curiostack:gradle-curiostack-plugin:${requested.version}")
             }
+            if (requested.id.id == "com.stellarstation.curiostack.gradle-curiostack-plugin") {
+                useModule("com.stellarstation.curiostack:gradle-curiostack-plugin:${requested.version}")
+            }
         }
     }
 

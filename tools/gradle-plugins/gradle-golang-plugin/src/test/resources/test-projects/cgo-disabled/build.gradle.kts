@@ -25,7 +25,7 @@
 import org.curioswitch.gradle.golang.tasks.GoTask;
 
 plugins {
-    id("org.curioswitch.gradle-golang-plugin")
+    id("com.stellarstation.curiostack.gradle-golang-plugin")
 }
 
 afterEvaluate {
