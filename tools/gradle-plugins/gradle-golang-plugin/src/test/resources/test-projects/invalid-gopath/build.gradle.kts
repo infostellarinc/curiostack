@@ -32,7 +32,7 @@ afterEvaluate {
     tasks {
         named<GoTask>("goBuild") {
             execCustomizer {
-                environment("CGO_ENABLED", "0")
+                environment("GOPATH", "./go")
             }
         }
     }
