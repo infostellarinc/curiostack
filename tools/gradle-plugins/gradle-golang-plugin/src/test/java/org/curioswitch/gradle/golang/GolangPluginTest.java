@@ -46,7 +46,7 @@ class GolangPluginTest {
 
     @BeforeAll
     void copyProject() {
-      projectDir = ResourceProjects.fromResources("test-projects/cgo-disabled");
+      projectDir = ResourceProjects.fromResources("test-projects/invalid-gopath");
     }
 
     @Test
@@ -57,9 +57,7 @@ class GolangPluginTest {
                   .withArguments("goBuild")
                   .withPluginClasspath())
           .fails()
-          // This mysterious message seems to be what go prints when CGO_ENABLED=0 for a cgo
-          // project.
-          .outputContains("cannot find module for path .");
+          .outputContains("GOPATH entry is relative; must be absolute path: \"./go\"");
     }
   }
 }
