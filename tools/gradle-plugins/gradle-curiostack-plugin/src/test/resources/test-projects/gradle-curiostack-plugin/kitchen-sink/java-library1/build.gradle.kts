@@ -29,7 +29,7 @@ plugins {
 
 dependencies {
   api("com.google.guava:guava")
-  implementation("org.curioswitch.curiostack:curio-server-framework")
+  implementation("com.stellarstation.curiostack:curio-server-framework")
 }
 
 publishing {

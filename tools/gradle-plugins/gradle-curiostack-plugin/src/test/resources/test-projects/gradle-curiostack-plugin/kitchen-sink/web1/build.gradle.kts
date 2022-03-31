@@ -23,7 +23,7 @@
  */
 
 plugins {
-    id("org.curioswitch.gradle-curio-web-plugin")
+    id("com.stellarstation.curiostack.gradle-curio-web-plugin")
 }
 
 base {

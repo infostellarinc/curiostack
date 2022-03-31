@@ -50,5 +50,5 @@
 // it works regardless of evaluation order.
 
 plugins {
-    id("org.curioswitch.gradle-terraform-plugin")
+    id("com.stellarstation.curiostack.gradle-terraform-plugin")
 }

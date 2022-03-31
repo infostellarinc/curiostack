@@ -25,5 +25,5 @@
 // |DIFF-ME|
 
 plugins {
-    id("org.curioswitch.gradle-static-site-plugin")
+    id("com.stellarstation.curiostack.gradle-static-site-plugin")
 }

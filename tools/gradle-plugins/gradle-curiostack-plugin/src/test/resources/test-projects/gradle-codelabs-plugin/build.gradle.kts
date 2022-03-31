@@ -23,5 +23,5 @@
  */
 
 plugins {
-    id("org.curioswitch.gradle-codelabs-plugin")
+    id("com.stellarstation.curiostack.gradle-codelabs-plugin")
 }
