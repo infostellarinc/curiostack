@@ -53,7 +53,7 @@ publishing {
             pom {
                 name.set("armeria-google-map-services")
                 description.set("A Google Maps API client, based on Armeria.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                     "common/google-cloud/maps-services")
             }
         }

@@ -60,9 +60,9 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-golang-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "go", "golang")
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-golang-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
+    tags = listOf()
 }
 
 publishing {
@@ -71,7 +71,7 @@ publishing {
             pom {
                 name.set("Gradle Golang Plugin")
                 description.set("Gradle plugin to build Go binaries.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-golang-plugin")
             }
         }

@@ -62,7 +62,7 @@ publishing {
             pom {
                 name.set("Curio Testing Framework")
                 description.set("A testing framework to help when using curiostack.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "common/testing/framework")
             }
         }

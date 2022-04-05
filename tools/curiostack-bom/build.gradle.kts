@@ -394,7 +394,7 @@ publishing {
                 name.set("Curiostack Bill-of-Materials")
                 description.set("BOM specifying versions for all standard Curiostack dependencies.")
                 url.set(
-                        "https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                        "https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                                 "curiostack-bom"
                 )
                 setPackaging("pom")

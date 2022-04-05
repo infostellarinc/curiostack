@@ -5,4 +5,4 @@ Based on Armeria, gRPC, Dagger, and others.
 
 ## Usage
 
-TODO(choko): Add better documentation. For now, check out [curio-auth-server](https://github.com/curioswitch/curiostack/tree/master/auth/server).
+TODO(choko): Add better documentation. For now, check out [curio-auth-server](https://github.com/infostellarinc/curiostack/tree/master/auth/server).

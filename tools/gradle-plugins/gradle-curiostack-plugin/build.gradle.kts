@@ -169,9 +169,9 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-curiostack-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "gradle")
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-curiostack-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
+    tags = listOf()
 }
 
 publishing {
@@ -183,7 +183,7 @@ publishing {
                         "using Curiostack conventions. Defines shared configuration and " +
                         "applies other useful plugins in an aim to be the only plugin in a " +
                         "root project.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "tools/gradle-plugins/gradle-curiostack-plugin")
             }
         }

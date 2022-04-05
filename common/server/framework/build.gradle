@@ -101,7 +101,7 @@ publishing {
                 name = 'Curio Server Framework'
                 description = 'A server framework to make it simple to create a ' +
                         'production-ready, API server or web service in Java.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/server/framework'
             }
         }
