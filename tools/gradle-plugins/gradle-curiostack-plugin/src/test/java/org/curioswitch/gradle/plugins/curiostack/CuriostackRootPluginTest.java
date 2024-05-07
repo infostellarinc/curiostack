@@ -101,33 +101,6 @@ class CuriostackRootPluginTest {
     }
 
     @Test
-    // This test is slow since it downloads a file, just run locally for now.
-    @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
-    void terraformInstallsKubectl() {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(":terraform:terraformInit", "--stacktrace")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":gcloudInstallComponents", ":terraform:terraformInit");
-    }
-
-    @Test
-    void terraformConvertsConfigs() {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(":terraform:terraformConvertConfigs", "--stacktrace")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":terraform:terraformConvertConfigs");
-
-      assertThat(projectDir.resolve("terraform/build/terraform/dummy.tf.json")).exists();
-      assertThat(projectDir.resolve("terraform/build/terraform/dummy2.tf")).exists();
-    }
-
-    @Test
     // This test is slow since it runs yarn, just run locally for now.
     @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
     void checksResolutions() {

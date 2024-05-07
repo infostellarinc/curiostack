@@ -133,20 +133,12 @@
   },
   "workspaces": {
     "packages": [
-      "cafe-map/api/build/web",
-      "cafe-map/client/web",
-      "cluster/pulumi/github",
-      "cluster/pulumi/root",
-      "cluster/pulumi/sysadmin",
       "common/web/base-node-dev",
       "common/web/base-web",
       "common/web/eslint-config-base",
       "common/web/eslint-config-web",
       "common/web/nunjucks",
-      "common/web/tsconfig",
-      "developer-portal",
-      "eggworld/api/build/web",
-      "eggworld/client/web"
+      "common/web/tsconfig"
     ]
   }
 }

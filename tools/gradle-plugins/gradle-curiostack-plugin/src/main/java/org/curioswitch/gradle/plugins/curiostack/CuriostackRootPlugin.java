@@ -72,7 +72,6 @@ import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
 import org.curioswitch.gradle.golang.GolangSetupPlugin;
 import org.curioswitch.gradle.golang.tasks.JibTask;
-import org.curioswitch.gradle.plugins.aws.AwsSetupPlugin;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
 import org.curioswitch.gradle.plugins.curiostack.tasks.CreateShellConfigTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.GenerateApiServerTask;
@@ -83,7 +82,6 @@ import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateProjectSettingsTask
 import org.curioswitch.gradle.plugins.gcloud.GcloudPlugin;
 import org.curioswitch.gradle.plugins.nodejs.NodePlugin;
 import org.curioswitch.gradle.plugins.nodejs.util.NodeUtil;
-import org.curioswitch.gradle.plugins.terraform.TerraformSetupPlugin;
 import org.curioswitch.gradle.release.ReleasePlugin;
 import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.curioswitch.gradle.tooldownloader.ToolDownloaderPlugin;
@@ -260,14 +258,12 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     // Provides useful tasks like 'clean', 'assemble' to the root project.
     plugins.apply(BasePlugin.class);
 
-    plugins.apply(AwsSetupPlugin.class);
     plugins.apply(CondaBuildEnvPlugin.class);
     plugins.apply(CurioGenericCiPlugin.class);
     plugins.apply(GcloudPlugin.class);
     plugins.apply(IdeaPlugin.class);
     plugins.apply(NodePlugin.class);
     plugins.apply(ReleasePlugin.class);
-    plugins.apply(TerraformSetupPlugin.class);
     plugins.apply(ToolDownloaderPlugin.class);
 
     rootProject.getRepositories().mavenCentral();

@@ -58,20 +58,9 @@ val DEPENDENCY_BOMS = listOf(
         "org.apache.beam:beam-sdks-java-bom:2.37.0",
         "org.apache.logging.log4j:log4j-bom:2.17.2",
         "org.junit:junit-bom:5.8.2",
-        "software.amazon.awssdk:bom:2.17.148"
 )
 
 val DEPENDENCY_SETS = listOf(
-        DependencySet(
-                "commons-codec",
-                "1.15",
-                listOf("commons-codec")
-        ),
-        DependencySet(
-                "commons-logging",
-                "1.2",
-                listOf("commons-logging")
-        ),
         DependencySet(
                 "com.auth0",
                 "3.18.3",
@@ -172,11 +161,6 @@ val DEPENDENCY_SETS = listOf(
                 "2.5.0",
                 listOf("mockito-java8")
         ),
-        DependencySet(
-                "io.fabric8",
-                "5.12.1",
-                listOf("kubernetes-client")
-        ),
         // grpc-bom can only be applied to Java projects because it does not export Gradle metadata. For
         // non-Java projects compiling gRPC stubs, they will only use these artifacts so we go ahead and manage
         // then in curiostack-bom as well.
@@ -226,21 +210,6 @@ val DEPENDENCY_SETS = listOf(
                 listOf("net.adoptopenjdk.v3.api", "net.adoptopenjdk.v3.vanilla")
         ),
         DependencySet(
-                "net.bytebuddy",
-                "1.12.8",
-                listOf("byte-buddy", "byte-buddy-agent")
-        ),
-        DependencySet(
-                "org.apache.httpcomponents",
-                "4.5.13",
-                listOf("httpclient")
-        ),
-        DependencySet(
-                "org.apache.httpcomponents",
-                "4.4.15",
-                listOf("httpcore")
-        ),
-        DependencySet(
                 "org.assertj",
                 "3.22.0",
                 listOf("assertj-core")
@@ -271,11 +240,6 @@ val DEPENDENCY_SETS = listOf(
                 listOf("checker-compat-qual")
         ),
         DependencySet(
-                "org.codehaus.groovy",
-                "3.0.10",
-                listOf("groovy")
-        ),
-        DependencySet(
                 "org.eclipse.jgit",
                 "6.1.0.202203080745-r",
                 listOf("org.eclipse.jgit", "org.eclipse.jgit.ssh.apache", "org.eclipse.jgit.ssh.jsch")
@@ -284,11 +248,6 @@ val DEPENDENCY_SETS = listOf(
                 "org.immutables",
                 "2.9.0",
                 listOf("builder", "value", "value-annotations")
-        ),
-        DependencySet(
-                "org.javassist",
-                "3.28.0-GA",
-                listOf("javassist")
         ),
         DependencySet(
                 "org.jctools",
@@ -317,11 +276,6 @@ val DEPENDENCY_SETS = listOf(
                         "sfm-converter", "sfm-jdbc", "sfm-jooq", "sfm-map", "sfm-reflect", "sfm-util"
                 )
         ),
-        DependencySet(
-                "org.yaml",
-                "1.30",
-                listOf("snakeyaml")
-        )
 )
 
 val DEPENDENCIES = listOf(
@@ -330,11 +284,9 @@ val DEPENDENCIES = listOf(
         "com.github.ben-manes:gradle-versions-plugin:0.42.0",
         "com.google.code.gson:gson:2.9.0",
         "com.google.gradle:osdetector-gradle-plugin:1.7.0",
-        "com.google.maps:google-maps-services:0.19.0",
         "com.gorylenko.gradle-git-properties:gradle-git-properties:2.3.1",
         "com.gradle:gradle-enterprise-gradle-plugin:3.8.1",
         "com.hubspot.jinjava:jinjava:2.6.0",
-        "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5",
         "com.uber.nullaway:nullaway:0.9.6",
         "de.undercouch:gradle-download-task:4.1.2",
         "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:6.0.6",
