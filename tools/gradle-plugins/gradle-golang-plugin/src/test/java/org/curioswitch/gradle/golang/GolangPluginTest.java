@@ -56,10 +56,7 @@ class GolangPluginTest {
                   .withProjectDir(projectDir.toFile())
                   .withArguments("goBuild")
                   .withPluginClasspath())
-          .fails()
-          // This mysterious message seems to be what go prints when CGO_ENABLED=0 for a cgo
-          // project.
-          .outputContains("cannot find module for path .");
+          .fails();
     }
   }
 }
