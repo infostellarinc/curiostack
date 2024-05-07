@@ -36,21 +36,21 @@ fi
 
 OPENJDK_DIR="$GRADLE_HOME/curiostack/openjdk"
 
-export JAVA_HOME="$OPENJDK_DIR/jdk-17.0.2+8"
+export JAVA_HOME="$OPENJDK_DIR/jdk-17.0.11+9"
 
-DEST="$OPENJDK_DIR/jdk-17.0.2+8.tar.gz.or.zip"
+DEST="$OPENJDK_DIR/jdk-17.0.11+9.tar.gz.or.zip"
 
 if "$linux" = "true"; then
-  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.2_8.tar.gz"
+  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jdk_x64_linux_hotspot_17.0.11_9.tar.gz"
 fi
 
 if "$darwin" = "true"; then
-  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jdk_x64_mac_hotspot_17.0.2_8.tar.gz"
+  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jdk_x64_mac_hotspot_17.0.11_9.tar.gz"
   export JAVA_HOME="$JAVA_HOME/Contents/Home"
 fi
 
 if "$windows" = "true"; then
-  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jdk_x64_windows_hotspot_17.0.2_8.zip"
+  SRC="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jdk_x64_windows_hotspot_17.0.11_9.zip"
 fi
 
 if [ ! -d "$JAVA_HOME" ]; then
