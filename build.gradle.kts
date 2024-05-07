@@ -131,7 +131,6 @@ ci {
     releaseTagPrefixes {
         register("RELEASE_SERVERS_") {
             project(":auth:server")
-            project(":eggworld:server")
         }
     }
 }
@@ -139,11 +138,6 @@ ci {
 buildScan {
     termsOfServiceUrl = "https://gradle.com/terms-of-service"
     termsOfServiceAgree = "yes"
-}
-
-tasks.named("yarn").configure {
-    // Hack to make sure yarn symlinks are set up after building the base packages.
-    finalizedBy(":eggworld:client:web:install")
 }
 
 tools {
