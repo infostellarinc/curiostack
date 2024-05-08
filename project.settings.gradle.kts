@@ -25,7 +25,6 @@
 // curio-auto-generated DO NOT MANUALLY EDIT
 include(":auth:api")
 include(":auth:server")
-include(":common:aws:sdk-core")
 include(":common:curio-helpers")
 include(":common:google-cloud:cloud-storage")
 include(":common:google-cloud:core")

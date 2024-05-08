@@ -96,12 +96,6 @@ gradlePlugin {
             description = "Plugin which adds a monorepo aware continuousBuild task for efficiently building on continuous integration"
             implementationClass = "org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin"
         }
-        register("codelabs") {
-            id = "org.curioswitch.gradle-codelabs-plugin"
-            displayName = "Gradle Codelabs Plugin"
-            description = "Plugin to build codelabs using claat"
-            implementationClass = "org.curioswitch.gradle.plugins.codelabs.CodelabsPlugin"
-        }
         register("curiostack") {
             id = "org.curioswitch.gradle-curiostack-plugin"
             displayName = "Gradle Curiostack Plugin"
@@ -135,12 +129,6 @@ gradlePlugin {
             description = "Plugin for invoking NodeJS"
             implementationClass = "org.curioswitch.gradle.plugins.nodejs.NodePlugin"
         }
-        register("pulumi") {
-            id = "org.curioswitch.gradle-pulumi-plugin"
-            displayName = "Gradle Pulumi Plugin"
-            description = "Plugin for invoking Pulumi"
-            implementationClass = "org.curioswitch.gradle.plugins.pulumi.PulumiPlugin"
-        }
         register("server") {
             id = "org.curioswitch.gradle-curio-server-plugin"
             displayName = "Gradle Curio Server Plugin"
@@ -152,12 +140,6 @@ gradlePlugin {
             displayName = "Gradle Static Site Plugin"
             description = "Plugin for deploying static sites to app engine and firebase"
             implementationClass = "org.curioswitch.gradle.plugins.staticsite.StaticSitePlugin"
-        }
-        register("terraform") {
-            id = "org.curioswitch.gradle-terraform-plugin"
-            displayName = "Gradle Terraform Plugin"
-            description = "Plugin for executing terraform, including extra features such as configuration templating and yaml config support"
-            implementationClass = "org.curioswitch.gradle.plugins.terraform.TerraformPlugin"
         }
         register("web") {
             id = "org.curioswitch.gradle-curio-web-plugin"
