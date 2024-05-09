@@ -48,7 +48,7 @@ publishing {
             pom {
                 name = 'assertj-protobuf'
                 description = 'An assertj extension for fine-grained assertions on protobuf messages.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/testing/assertj-protobuf'
             }
         }

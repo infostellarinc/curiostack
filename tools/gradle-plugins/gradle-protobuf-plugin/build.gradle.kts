@@ -53,8 +53,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-protobuf-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-protobuf-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
     tags = listOf("curiostack", "protobuf")
 }
 
@@ -64,7 +64,7 @@ publishing {
             pom {
                 name.set("Gradle Protobuf Plugin")
                 description.set("Gradle plugin to compile proto files into generated code.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-protobuf-plugin")
             }
         }

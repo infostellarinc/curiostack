@@ -44,7 +44,7 @@ publishing {
             pom {
                 name.set("Curio Helpers")
                 description.set("Helpers to use in all curiostack projects.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/common/curio-helpers")
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/common/curio-helpers")
             }
         }
     }

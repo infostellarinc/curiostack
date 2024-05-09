@@ -53,8 +53,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-tool-downloader-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-tool-downloader-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
     tags = listOf("curiostack", "tools", "downloader")
 }
 
@@ -64,7 +64,7 @@ publishing {
             pom {
                 name.set("Gradle Tool Downloader Plugin")
                 description.set("Gradle plugin to download tools for use in builds.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-tool-downloader-plugin")
             }
         }

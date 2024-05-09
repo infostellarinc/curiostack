@@ -50,8 +50,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-release-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-release-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
     tags = listOf("curiostack", "release", "version")
 }
 
@@ -61,7 +61,7 @@ publishing {
             pom {
                 name.set("Gradle Release Plugin")
                 description.set("Gradle plugin to perform versioning of releases using curiostack conventions.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-release-plugin")
             }
         }

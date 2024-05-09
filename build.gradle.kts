@@ -91,18 +91,18 @@ allprojects {
                         }
                         developers {
                             developer {
-                                id.set("chokoswitch")
-                                name.set("Choko")
-                                email.set("choko@curioswitch.org")
-                                organization.set("CurioSwitch")
-                                organizationUrl.set("https://github.com/curioswitch/curiostack")
+                                id.set("infostellar")
+                                name.set("Infostellar")
+                                email.set("eng@istellar.com")
+                                organization.set("Infostellar")
+                                organizationUrl.set("https://github.com/infostellarinc/curiostack")
                             }
                         }
 
                         scm {
-                            connection.set("scm:git:git://github.com/curioswitch/curiostack.git")
-                            developerConnection.set("scm:git:ssh://github.com:curioswitch/curiostack.git")
-                            url.set("https://github.com/curioswitch/curiostack")
+                            connection.set("scm:git:git://github.com/infostellarinc/curiostack.git")
+                            developerConnection.set("scm:git:ssh://github.com:infostellarinc/curiostack.git")
+                            url.set("https://github.com/infostellarinc/curiostack")
                         }
                     }
                 }

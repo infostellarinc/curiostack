@@ -51,7 +51,7 @@ publishing {
             pom {
                 name = 'armeria-google-cloud-core'
                 description = 'Armeria based Google Cloud IAM client.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/google-cloud/iam'
             }
         }

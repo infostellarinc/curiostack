@@ -59,8 +59,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-conda-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
+    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-conda-plugin"
+    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
     tags = listOf("curiostack", "miniconda")
 }
 
@@ -70,7 +70,7 @@ publishing {
             pom {
                 name.set("Gradle Conda Plugin")
                 description.set("Gradle plugin to use miniconda to create a build environment.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-conda-plugin")
             }
         }

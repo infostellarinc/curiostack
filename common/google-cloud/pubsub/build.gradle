@@ -59,7 +59,7 @@ publishing {
             pom {
                 name = 'armeria-google-cloud-storage'
                 description = 'A Pub/Sub client, based on Armeria.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/google-cloud/armeria-google-cloud-pubsub'
             }
         }

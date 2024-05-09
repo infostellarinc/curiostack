@@ -47,7 +47,7 @@ publishing {
             pom {
                 name = 'armeria-google-cloud-storage'
                 description = 'A Stackdriver Trace client, based on Armeria.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/google-cloud/armeria-google-cloud-trace'
             }
         }
