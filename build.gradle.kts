@@ -27,13 +27,7 @@ import nl.javadude.gradle.plugins.license.LicenseExtension
 import nl.javadude.gradle.plugins.license.LicensePlugin
 
 plugins {
-    id("io.github.gradle-nexus.publish-plugin")
-}
-
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 allprojects {
@@ -60,17 +54,7 @@ allprojects {
     }
 
     plugins.withType(MavenPublishPlugin::class) {
-        plugins.apply("signing")
-
         afterEvaluate {
-            configure<SigningExtension> {
-                useInMemoryPgpKeys(System.getenv("MAVEN_GPG_PRIVATE_KEY"), "")
-                val publications = the<PublishingExtension>().publications
-                if (publications.names.contains("maven")) {
-                    sign(publications["maven"])
-                }
-            }
-
             configure<PublishingExtension> {
                 publications.withType<MavenPublication> {
                     groupId = project.group as String
@@ -91,30 +75,20 @@ allprojects {
                         }
                         developers {
                             developer {
-                                id.set("chokoswitch")
-                                name.set("Choko")
-                                email.set("choko@curioswitch.org")
-                                organization.set("CurioSwitch")
-                                organizationUrl.set("https://github.com/curioswitch/curiostack")
+                                id.set("infostellar")
+                                name.set("Infostellar")
+                                email.set("eng@istellar.com")
+                                organization.set("Infostellar")
+                                organizationUrl.set("https://github.com/infostellarinc/curiostack")
                             }
                         }
 
                         scm {
-                            connection.set("scm:git:git://github.com/curioswitch/curiostack.git")
-                            developerConnection.set("scm:git:ssh://github.com:curioswitch/curiostack.git")
-                            url.set("https://github.com/curioswitch/curiostack")
+                            connection.set("scm:git:git://github.com/infostellarinc/curiostack.git")
+                            developerConnection.set("scm:git:ssh://github.com:infostellarinc/curiostack.git")
+                            url.set("https://github.com/infostellarinc/curiostack")
                         }
                     }
-                }
-            }
-        }
-    }
-
-    plugins.withId("com.gradle.plugin-publish") {
-        afterEvaluate {
-            tasks.configureEach {
-                if (name != "publishPlugins" && !name.contains("MavenLocal") && name.startsWith("publish")) {
-                    enabled = false
                 }
             }
         }

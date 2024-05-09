@@ -93,6 +93,7 @@ import org.gradle.api.XmlProvider;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ResolutionStrategy;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
+import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.attributes.java.TargetJvmVersion;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.ExtensionAware;
@@ -265,8 +266,22 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     plugins.apply(NodePlugin.class);
     plugins.apply(ReleasePlugin.class);
     plugins.apply(ToolDownloaderPlugin.class);
+    plugins.apply("com.google.cloud.artifactregistry.gradle-plugin");
 
-    rootProject.getRepositories().mavenCentral();
+    rootProject
+        .getRepositories()
+        .mavenCentral(
+            repository ->
+                repository.content(
+                    content ->
+                        content.excludeModuleByRegex(
+                            "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+
+    var privateRepositoryUrl = rootProject.findProperty("org.curioswitch.curiostack.repo_uri");
+    if (privateRepositoryUrl != null) {
+      rootProject.getRepositories().maven(repository -> repository.setUrl(privateRepositoryUrl));
+    }
+
     rootProject.getRepositories().mavenLocal();
 
     var updateGradleWrapper =
@@ -445,8 +460,25 @@ public class CuriostackRootPlugin implements Plugin<Project> {
   }
 
   private static void setupRepositories(Project project) {
-    project.getRepositories().gradlePluginPortal();
-    project.getRepositories().mavenCentral();
+    RepositoryHandler repositories = project.getRepositories();
+    repositories.gradlePluginPortal(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+    repositories.mavenCentral(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+
+    var privateRepositoryUrl =
+        project.getRootProject().findProperty("org.curioswitch.curiostack.repo_uri");
+    if (privateRepositoryUrl != null) {
+      repositories.maven(repository -> repository.setUrl(privateRepositoryUrl));
+    }
   }
 
   private static void setupJavaProject(

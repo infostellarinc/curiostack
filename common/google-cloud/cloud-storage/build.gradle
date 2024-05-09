@@ -25,6 +25,7 @@
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'org.curioswitch.gradle-grpc-api-plugin'
+apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 archivesBaseName = 'armeria-google-cloud-storage'
 
@@ -54,13 +55,18 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            url rootProject.findProperty("org.curioswitch.curiostack.repo_uri")
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
                 name = 'armeria-google-cloud-storage'
                 description = 'A library for efficient uploading of files to Google Cloud ' +
                         'Storage, based on armeria.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/google-cloud/armeria-cloud-storage'
             }
         }

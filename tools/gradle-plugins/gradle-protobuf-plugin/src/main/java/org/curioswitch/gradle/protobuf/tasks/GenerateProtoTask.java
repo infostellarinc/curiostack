@@ -267,7 +267,12 @@ public class GenerateProtoTask extends DefaultTask {
     List<ArtifactRepository> currentRepositories = ImmutableList.copyOf(repositories);
     // Make sure Maven Central is present as a repository since it's the usual place to
     // get protoc, even for non-Java projects. We restore to the previous state after the task.
-    repositories.mavenCentral();
+    repositories.mavenCentral(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
 
     List<Dependency> dependencies =
         artifacts.stream()

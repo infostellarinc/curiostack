@@ -22,9 +22,12 @@
  * SOFTWARE.
  */
 
+import java.net.URI
+
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
     id("org.curioswitch.gradle-grpc-api-plugin")
 }
 
@@ -62,9 +65,14 @@ publishing {
             pom {
                 name.set("Curio Testing Framework")
                 description.set("A testing framework to help when using curiostack.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "common/testing/framework")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

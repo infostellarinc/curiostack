@@ -23,12 +23,12 @@
  */
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.net.URI
 
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-
-    id("com.gradle.plugin-publish")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -59,21 +59,20 @@ gradlePlugin {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-golang-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "go", "golang")
-}
-
 publishing {
     publications {
         register<MavenPublication>("pluginMaven") {
             pom {
                 name.set("Gradle Golang Plugin")
                 description.set("Gradle plugin to build Go binaries.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-golang-plugin")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

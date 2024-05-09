@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
+import java.net.URI
+
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-
-    id("com.gradle.plugin-publish")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -52,21 +53,20 @@ gradlePlugin {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-tool-downloader-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "tools", "downloader")
-}
-
 publishing {
     publications {
         register<MavenPublication>("pluginMaven") {
             pom {
                 name.set("Gradle Tool Downloader Plugin")
                 description.set("Gradle plugin to download tools for use in builds.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-tool-downloader-plugin")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

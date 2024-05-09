@@ -24,6 +24,7 @@
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 archivesBaseName = 'armeria-google-cloud-trace'
 
@@ -42,12 +43,17 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            url rootProject.findProperty("org.curioswitch.curiostack.repo_uri")
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
                 name = 'armeria-google-cloud-storage'
                 description = 'A Stackdriver Trace client, based on Armeria.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/google-cloud/armeria-google-cloud-trace'
             }
         }

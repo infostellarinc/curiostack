@@ -23,10 +23,12 @@
  */
 
 import org.gradle.api.JavaVersion;
+import java.net.URI
 
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 java {
@@ -44,8 +46,13 @@ publishing {
             pom {
                 name.set("Curio Helpers")
                 description.set("Helpers to use in all curiostack projects.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/common/curio-helpers")
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/common/curio-helpers")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

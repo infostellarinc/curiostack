@@ -23,10 +23,12 @@
  */
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import java.net.URI
 
 plugins {
     `java-platform`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
     id("com.github.ben-manes.versions")
 }
 
@@ -279,6 +281,7 @@ val DEPENDENCY_SETS = listOf(
 )
 
 val DEPENDENCIES = listOf(
+        "gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.1",
         "com.bmuschko:gradle-docker-plugin:7.3.0",
         "com.diffplug.spotless:spotless-plugin-gradle:6.3.0",
         "com.github.ben-manes:gradle-versions-plugin:0.42.0",
@@ -346,11 +349,16 @@ publishing {
                 name.set("Curiostack Bill-of-Materials")
                 description.set("BOM specifying versions for all standard Curiostack dependencies.")
                 url.set(
-                        "https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                        "https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                                 "curiostack-bom"
                 )
                 setPackaging("pom")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

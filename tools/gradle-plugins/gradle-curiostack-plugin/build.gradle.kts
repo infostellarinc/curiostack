@@ -24,12 +24,12 @@
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.net.URI
 
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-
-    id("com.gradle.plugin-publish")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":tools:gradle-plugins:gradle-release-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-tool-downloader-plugin"))
 
+    implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin")
     implementation("com.bmuschko:gradle-docker-plugin")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
@@ -149,12 +150,6 @@ gradlePlugin {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-curiostack-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "gradle")
-}
-
 publishing {
     publications {
         register<MavenPublication>("pluginMaven") {
@@ -164,9 +159,14 @@ publishing {
                         "using Curiostack conventions. Defines shared configuration and " +
                         "applies other useful plugins in an aim to be the only plugin in a " +
                         "root project.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "tools/gradle-plugins/gradle-curiostack-plugin")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }
