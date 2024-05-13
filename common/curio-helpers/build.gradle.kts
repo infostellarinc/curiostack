@@ -27,6 +27,7 @@ import org.gradle.api.JavaVersion;
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 java {
@@ -46,6 +47,11 @@ publishing {
                 description.set("Helpers to use in all curiostack projects.")
                 url.set("https://github.com/infostellarinc/curiostack/tree/master/common/curio-helpers")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = rootProject.ext.get("privateRepositoryUri") as java.net.URI
         }
     }
 }

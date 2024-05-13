@@ -25,8 +25,7 @@
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-
-    id("com.gradle.plugin-publish")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -58,12 +57,6 @@ gradlePlugin {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/infostellarinc/curiostack/tree/master/tools/gradle-plugins/gradle-conda-plugin"
-    vcsUrl = "https://github.com/infostellarinc/curiostack.git"
-    tags = listOf("curiostack", "miniconda")
-}
-
 publishing {
     publications {
         register<MavenPublication>("pluginMaven") {
@@ -73,6 +66,11 @@ publishing {
                 url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-conda-plugin")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = rootProject.ext.get("privateRepositoryUri") as java.net.URI
         }
     }
 }

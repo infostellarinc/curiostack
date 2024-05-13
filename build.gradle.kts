@@ -27,14 +27,10 @@ import nl.javadude.gradle.plugins.license.LicenseExtension
 import nl.javadude.gradle.plugins.license.LicensePlugin
 
 plugins {
-    id("io.github.gradle-nexus.publish-plugin")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
-}
+ext.set("privateRepositoryUri", uri("artifactregistry://asia-northeast1-maven.pkg.dev/infostellar-cluster/curiostack"))
 
 allprojects {
     project.group = "org.curioswitch.curiostack"
@@ -60,17 +56,7 @@ allprojects {
     }
 
     plugins.withType(MavenPublishPlugin::class) {
-        plugins.apply("signing")
-
         afterEvaluate {
-            configure<SigningExtension> {
-                useInMemoryPgpKeys(System.getenv("MAVEN_GPG_PRIVATE_KEY"), "")
-                val publications = the<PublishingExtension>().publications
-                if (publications.names.contains("maven")) {
-                    sign(publications["maven"])
-                }
-            }
-
             configure<PublishingExtension> {
                 publications.withType<MavenPublication> {
                     groupId = project.group as String
@@ -105,16 +91,6 @@ allprojects {
                             url.set("https://github.com/infostellarinc/curiostack")
                         }
                     }
-                }
-            }
-        }
-    }
-
-    plugins.withId("com.gradle.plugin-publish") {
-        afterEvaluate {
-            tasks.configureEach {
-                if (name != "publishPlugins" && !name.contains("MavenLocal") && name.startsWith("publish")) {
-                    enabled = false
                 }
             }
         }

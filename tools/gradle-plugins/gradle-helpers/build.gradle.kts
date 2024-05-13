@@ -25,6 +25,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -45,6 +46,11 @@ publishing {
                 url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-helpers")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = rootProject.ext.get("privateRepositoryUri") as java.net.URI
         }
     }
 }

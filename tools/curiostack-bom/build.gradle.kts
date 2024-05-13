@@ -27,6 +27,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     `java-platform`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
     id("com.github.ben-manes.versions")
 }
 
@@ -399,6 +400,11 @@ publishing {
                 )
                 setPackaging("pom")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = rootProject.ext.get("privateRepositoryUri") as java.net.URI
         }
     }
 }

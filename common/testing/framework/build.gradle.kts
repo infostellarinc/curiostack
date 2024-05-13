@@ -25,6 +25,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
     id("org.curioswitch.gradle-grpc-api-plugin")
 }
 
@@ -65,6 +66,11 @@ publishing {
                 url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "common/testing/framework")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = rootProject.ext.get("privateRepositoryUri") as java.net.URI
         }
     }
 }
