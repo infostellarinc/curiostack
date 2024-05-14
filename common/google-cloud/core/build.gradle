@@ -24,6 +24,7 @@
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 archivesBaseName = 'armeria-google-cloud-core'
 
@@ -55,6 +56,11 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            url rootProject.ext.get("privateRepositoryUri")
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
