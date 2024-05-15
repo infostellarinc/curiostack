@@ -23,8 +23,6 @@
  */
 
 // curio-auto-generated DO NOT MANUALLY EDIT
-include(":auth:api")
-include(":auth:server")
 include(":common:curio-helpers")
 include(":common:google-cloud:cloud-storage")
 include(":common:google-cloud:core")
@@ -35,8 +33,6 @@ include(":common:google-cloud:trace")
 include(":common:server:framework")
 include(":common:testing:assertj-protobuf")
 include(":common:testing:framework")
-include(":common:web:base-web")
-include(":common:web:nunjucks")
 include(":tools:curiostack-bom")
 include(":tools:golang-test")
 include(":tools:gradle-plugins:gradle-conda-plugin")
