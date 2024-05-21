@@ -23,4 +23,3 @@
  */
 
 include(":java-library1")
-include(":web1")

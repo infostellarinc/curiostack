@@ -59,7 +59,6 @@ val DEPENDENCY_BOMS = listOf(
         "org.apache.beam:beam-sdks-java-bom:2.37.0",
         "org.apache.logging.log4j:log4j-bom:2.17.2",
         "org.junit:junit-bom:5.8.2",
-        "software.amazon.awssdk:bom:2.17.148"
 )
 
 val DEPENDENCY_SETS = listOf(
@@ -335,7 +334,6 @@ val DEPENDENCIES = listOf(
         "com.gorylenko.gradle-git-properties:gradle-git-properties:2.3.1",
         "com.gradle:gradle-enterprise-gradle-plugin:3.8.1",
         "com.hubspot.jinjava:jinjava:2.6.0",
-        "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5",
         "com.uber.nullaway:nullaway:0.9.6",
         "de.undercouch:gradle-download-task:4.1.2",
         "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:6.0.6",
