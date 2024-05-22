@@ -97,7 +97,7 @@ public class IpFilteringService extends SimpleDecoratingHttpService {
             rule -> {
               List<String> parts = RULE_SPLITTER.splitToList(rule);
               // TODO(choko): Add better validation.
-              checkArgument(parts.size() == 2, "invalid rule: {}", rule);
+              checkArgument(parts.size() == 2, "invalid rule: %s", rule);
               return new IpSubnetFilterRule(
                   parts.get(0), Integer.parseInt(parts.get(1)), IpFilterRuleType.ACCEPT);
             })

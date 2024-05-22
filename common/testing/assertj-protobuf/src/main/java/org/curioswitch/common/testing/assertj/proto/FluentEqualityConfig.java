@@ -392,45 +392,57 @@ public abstract class FluentEqualityConfig
 
   abstract Builder toBuilder();
 
-  @CanIgnoreReturnValue
   @AutoValue.Builder
   abstract static class Builder {
+    @CanIgnoreReturnValue
     abstract Builder setIgnoreFieldAbsenceScope(FieldScopeLogic fieldScopeLogic);
 
+    @CanIgnoreReturnValue
     abstract Builder setIgnoreRepeatedFieldOrderScope(FieldScopeLogic fieldScopeLogic);
 
+    @CanIgnoreReturnValue
     abstract Builder setIgnoreExtraRepeatedFieldElementsScope(FieldScopeLogic fieldScopeLogic);
 
+    @CanIgnoreReturnValue
     abstract Builder setDoubleCorrespondenceMap(
         FieldScopeLogicMap<Offset<Double>> doubleCorrespondenceMap);
 
+    @CanIgnoreReturnValue
     abstract Builder setFloatCorrespondenceMap(
         FieldScopeLogicMap<Offset<Float>> floatCorrespondenceMap);
 
+    @CanIgnoreReturnValue
     abstract Builder setCompareExpectedFieldsOnly(boolean compare);
 
+    @CanIgnoreReturnValue
     abstract Builder setExpectedMessages(ImmutableList<Message> messages);
 
+    @CanIgnoreReturnValue
     abstract Builder setCompareFieldsScope(FieldScopeLogic fieldScopeLogic);
 
+    @CanIgnoreReturnValue
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
     @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
 
+    @CanIgnoreReturnValue
     abstract Builder setUsingCorrespondenceStringFunction(
         Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction);
 
+    @CanIgnoreReturnValue
     abstract FluentEqualityConfig build();
 
     // Lazy formatting methods.
     // These allow us to print raw integer field numbers with meaningful names.
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceString(String string) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(usingCorrespondenceStringFunction(), Functions.constant(string)));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldNumbersString(
         String fmt, Iterable<Integer> fieldNumbers) {
       return setUsingCorrespondenceStringFunction(
@@ -439,6 +451,7 @@ public abstract class FluentEqualityConfig
               FieldScopeUtil.fieldNumbersFunction(fmt, fieldNumbers)));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldDescriptorsString(
         String fmt, Iterable<FieldDescriptor> fieldDescriptors) {
       return setUsingCorrespondenceStringFunction(
@@ -447,6 +460,7 @@ public abstract class FluentEqualityConfig
               Functions.constant(String.format(fmt, join(fieldDescriptors)))));
     }
 
+    @CanIgnoreReturnValue
     final Builder addUsingCorrespondenceFieldScopeString(String fmt, FieldScope fieldScope) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(

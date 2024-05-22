@@ -441,6 +441,7 @@ public class CurioReflectionService extends ReflectionService {
   /** No effect anymore */
   @Override
   @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public CurioReflectionService withSelfScoreFullName(boolean selfScoreFullName) {
     return this;
   }
@@ -452,6 +453,7 @@ public class CurioReflectionService extends ReflectionService {
 
   @Override
   @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public boolean selfScoreFullName() {
     return false;
   }

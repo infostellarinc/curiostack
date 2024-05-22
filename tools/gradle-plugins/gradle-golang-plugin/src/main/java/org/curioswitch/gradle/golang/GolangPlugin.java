@@ -29,6 +29,7 @@ import static org.curioswitch.gradle.helpers.task.TaskUtil.toTaskSuffix;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 import org.curioswitch.gradle.conda.exec.CondaExecUtil;
@@ -142,7 +143,7 @@ public class GolangPlugin implements Plugin<Project> {
                         if (stdOut.size() > 0) {
                           throw new GradleException(
                               "There were formatting violations. Run :goFormat to fix.\n"
-                                  + stdOut.toString());
+                                  + stdOut.toString(StandardCharsets.UTF_8));
                         }
                       });
                   t.execCustomizer(exec -> exec.setStandardOutput(stdOut));

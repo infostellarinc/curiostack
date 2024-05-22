@@ -64,6 +64,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureReader;
@@ -188,7 +189,7 @@ public class AsmUtils {
     primitivesClassAndWrapper.addAll(wrappers.values());
   }
 
-  static File targetDir = null;
+  @Nullable static File targetDir = null;
 
   static {
     String targetDirStr = System.getProperty(ASM_DUMP_TARGET_DIR);
@@ -327,28 +328,28 @@ public class AsmUtils {
     public void visitBaseType(char descriptor) {
       switch (descriptor) {
         case 'Z':
-          type = (boolean.class);
+          type = boolean.class;
           break;
         case 'B':
-          type = (byte.class);
+          type = byte.class;
           break;
         case 'C':
-          type = (char.class);
+          type = char.class;
           break;
         case 'D':
-          type = (double.class);
+          type = double.class;
           break;
         case 'F':
-          type = (float.class);
+          type = float.class;
           break;
         case 'I':
-          type = (int.class);
+          type = int.class;
           break;
         case 'J':
-          type = (long.class);
+          type = long.class;
           break;
         case 'S':
-          type = (short.class);
+          type = short.class;
           break;
         default:
           throw new IllegalArgumentException("Unexpected primitiv " + descriptor);
@@ -378,7 +379,7 @@ public class AsmUtils {
     @Override
     public void visitClassType(String name) {
       try {
-        type = (Class.forName(name.replace('/', '.'), true, classLoader));
+        type = Class.forName(name.replace('/', '.'), true, classLoader);
       } catch (ClassNotFoundException e) {
         ErrorHelper.rethrow(e);
       }
