@@ -55,7 +55,6 @@ dependencies {
     implementation("gradle.plugin.com.boxfuse.client:gradle-plugin-publishing")
     implementation("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin")
     implementation("gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin")
-    implementation("io.fabric8:kubernetes-client")
     implementation("me.champeau.gradle:jmh-gradle-plugin")
     implementation("net.adoptopenjdk:net.adoptopenjdk.v3.api")
     implementation("net.adoptopenjdk:net.adoptopenjdk.v3.vanilla")

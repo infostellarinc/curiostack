@@ -63,16 +63,6 @@ val DEPENDENCY_BOMS = listOf(
 
 val DEPENDENCY_SETS = listOf(
         DependencySet(
-                "commons-codec",
-                "1.15",
-                listOf("commons-codec")
-        ),
-        DependencySet(
-                "commons-logging",
-                "1.2",
-                listOf("commons-logging")
-        ),
-        DependencySet(
                 "com.auth0",
                 "3.18.3",
                 listOf("java-jwt")
@@ -172,11 +162,6 @@ val DEPENDENCY_SETS = listOf(
                 "2.5.0",
                 listOf("mockito-java8")
         ),
-        DependencySet(
-                "io.fabric8",
-                "5.12.1",
-                listOf("kubernetes-client")
-        ),
         // grpc-bom can only be applied to Java projects because it does not export Gradle metadata. For
         // non-Java projects compiling gRPC stubs, they will only use these artifacts so we go ahead and manage
         // then in curiostack-bom as well.
@@ -226,21 +211,6 @@ val DEPENDENCY_SETS = listOf(
                 listOf("net.adoptopenjdk.v3.api", "net.adoptopenjdk.v3.vanilla")
         ),
         DependencySet(
-                "net.bytebuddy",
-                "1.12.8",
-                listOf("byte-buddy", "byte-buddy-agent")
-        ),
-        DependencySet(
-                "org.apache.httpcomponents",
-                "4.5.13",
-                listOf("httpclient")
-        ),
-        DependencySet(
-                "org.apache.httpcomponents",
-                "4.4.15",
-                listOf("httpcore")
-        ),
-        DependencySet(
                 "org.assertj",
                 "3.22.0",
                 listOf("assertj-core")
@@ -271,11 +241,6 @@ val DEPENDENCY_SETS = listOf(
                 listOf("checker-compat-qual")
         ),
         DependencySet(
-                "org.codehaus.groovy",
-                "3.0.10",
-                listOf("groovy")
-        ),
-        DependencySet(
                 "org.eclipse.jgit",
                 "6.1.0.202203080745-r",
                 listOf("org.eclipse.jgit", "org.eclipse.jgit.ssh.apache", "org.eclipse.jgit.ssh.jsch")
@@ -284,11 +249,6 @@ val DEPENDENCY_SETS = listOf(
                 "org.immutables",
                 "2.9.0",
                 listOf("builder", "value", "value-annotations")
-        ),
-        DependencySet(
-                "org.javassist",
-                "3.28.0-GA",
-                listOf("javassist")
         ),
         DependencySet(
                 "org.jctools",
@@ -317,11 +277,6 @@ val DEPENDENCY_SETS = listOf(
                         "sfm-converter", "sfm-jdbc", "sfm-jooq", "sfm-map", "sfm-reflect", "sfm-util"
                 )
         ),
-        DependencySet(
-                "org.yaml",
-                "1.30",
-                listOf("snakeyaml")
-        )
 )
 
 val DEPENDENCIES = listOf(
