@@ -59,8 +59,9 @@ dependencies {
     implementation("net.ltgt.gradle:gradle-errorprone-plugin")
     implementation("net.ltgt.gradle:gradle-nullaway-plugin")
     implementation("nu.studer:gradle-jooq-plugin")
-    implementation("org.bouncycastle:bcpkix-jdk15on")
+    implementation("org.bouncycastle:bcpkix-jdk18on")
     implementation("org.eclipse.jgit:org.eclipse.jgit")
+    implementation("org.jsoup:jsoup")
 
     // Prevent dependency hell for plugin users by specifying bom"d versions of grpc here
     runtimeOnly("io.grpc:grpc-core")
