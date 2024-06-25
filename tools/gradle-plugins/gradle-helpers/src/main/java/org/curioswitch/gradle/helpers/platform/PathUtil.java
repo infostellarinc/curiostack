@@ -24,72 +24,28 @@
 
 package org.curioswitch.gradle.helpers.platform;
 
-import java.nio.file.Files;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.gradle.api.Project;
 
 /** Utilities for working with file paths. */
 public final class PathUtil {
 
-  /**
-   * Returns a {@link String} representation of the {@link Path} that can be included in a bash
-   * invocation.
-   */
-  public static String toBashString(Path path) {
-    return toBashString(path.toAbsolutePath().toString());
-  }
+  public static Path getExecutablePath(Project project, String name) {
+    var output = new ByteArrayOutputStream();
+    var result =
+        project.exec(
+            execSpec -> {
+              execSpec.commandLine("which", name);
+              execSpec.setStandardOutput(output);
+            });
+    if (result.getExitValue() != 0) {
+      throw new RuntimeException("Failed to find executable: " + name);
+    }
 
-  /**
-   * Returns a {@link String} representation of the {@link String} that can be included in a bash
-   * invocation. The {@code path} is often an interpolation.
-   */
-  public static String toBashString(String path) {
-    var helper = new PlatformHelper();
-    if (helper.getOs() != OperatingSystem.WINDOWS) {
-      return path;
-    }
-    if (path.contains("$")) {
-      // Path is an interpolation, only option is to delegate to cygwin
-      return "$(cygpath " + path + ")";
-    }
-    path = path.replace('\\', '/');
-    int colonIndex = path.indexOf(':');
-    if (colonIndex < 0) {
-      return path;
-    }
-    return '/' + path.substring(0, colonIndex) + path.substring(colonIndex + 1);
-  }
-
-  /**
-   * Returns the name appended with a platform specific exe extension. This currently just adds .exe
-   * to the name on Windows.
-   */
-  public static String getExeName(String name) {
-    var helper = new PlatformHelper();
-    if (helper.getOs() == OperatingSystem.WINDOWS) {
-      return name + ".exe";
-    } else {
-      return name;
-    }
-  }
-
-  /**
-   * Returns a path that can be used to execute bash by Gradle, taking into account OS-specific
-   * conventions.
-   */
-  public static String getBashExecutable() {
-    String bashExecutable = System.getenv("MSYS_BASH_PATH");
-    if (bashExecutable != null) {
-      return bashExecutable;
-    }
-    // Optimistically try the default msys location if env variable isn't set (e.g., IntelliJ).
-    bashExecutable = "C:\\tools\\msys64\\usr\\bin\\bash.exe";
-    if (Files.exists(Paths.get(bashExecutable))) {
-      return bashExecutable;
-    }
-    // This is usually Git bash on CI, but WSL bash on a desktop machine which will not work.
-    // TODO(choko): Find a more robust way of doing this.
-    return "bash";
+    return Paths.get(output.toString(Charset.defaultCharset())).toAbsolutePath();
   }
 
   private PathUtil() {}

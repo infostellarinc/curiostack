@@ -40,10 +40,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import org.curioswitch.gradle.helpers.platform.OperatingSystem;
+import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.helpers.platform.PlatformHelper;
 import org.curioswitch.gradle.plugins.curiostack.ToolDependencies;
 import org.curioswitch.gradle.plugins.shared.CommandUtil;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
@@ -237,13 +237,7 @@ public class UpdateIntelliJSdksTask extends DefaultTask {
       goSdkXmlLines = EMPTY_GO_SDK_TABLE.lines().collect(toImmutableList());
     }
 
-    String goSdk =
-        intellijPath(
-            DownloadedToolManager.get(project)
-                .getToolDir("go")
-                .resolve("go")
-                .toAbsolutePath()
-                .toString());
+    String goSdk = intellijPath(PathUtil.getExecutablePath(project, "go").toString());
 
     if (goSdkXmlLines.stream().anyMatch(line -> line.contains("<option value=\"" + goSdk + "\""))) {
       return;

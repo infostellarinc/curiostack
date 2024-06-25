@@ -34,7 +34,6 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.curioswitch.gradle.golang.GolangSetupPlugin;
 import org.curioswitch.gradle.helpers.platform.PlatformHelper;
 import org.curioswitch.gradle.plugins.curiostack.CuriostackRootPlugin;
 import org.curioswitch.gradle.plugins.curiostack.ToolDependencies;
@@ -72,7 +71,6 @@ class UpdateIntelliJSdksTaskTest {
     properties.set("org.curioswitch.curiostack.tools.openjdk", "zulu13.28.11-ca-jdk13.0.1");
 
     project.getPlugins().apply(CuriostackRootPlugin.class);
-    project.getPlugins().apply(GolangSetupPlugin.class);
 
     task =
         project

@@ -26,9 +26,6 @@ package org.curioswitch.gradle.plugins.ci.tasks;
 
 import javax.inject.Inject;
 import org.curioswitch.gradle.helpers.exec.ExternalExecUtil;
-import org.curioswitch.gradle.helpers.platform.OperatingSystem;
-import org.curioswitch.gradle.helpers.platform.PlatformHelper;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -70,18 +67,9 @@ public class FetchCodeCovCacheTask extends DefaultTask {
         getProject(),
         workerExecutor,
         exec -> {
-          var toolManager = DownloadedToolManager.get(getProject());
-
-          String gsutil =
-              new PlatformHelper().getOs() == OperatingSystem.WINDOWS ? "gsutil.cmd" : "gsutil";
-
           exec.executable("bash");
-
-          exec.args("-c", gsutil + " cp " + src.get() + " - | tar -xpz --skip-old-files");
-
+          exec.args("-c", "gsutil cp " + src.get() + " - | tar -xpz --skip-old-files");
           exec.setIgnoreExitValue(true);
-
-          toolManager.addAllToPath(exec);
         });
   }
 }

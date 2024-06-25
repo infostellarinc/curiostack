@@ -33,9 +33,6 @@ import java.nio.file.Files;
 import java.util.List;
 import javax.inject.Inject;
 import org.curioswitch.gradle.helpers.exec.ExternalExecUtil;
-import org.curioswitch.gradle.helpers.platform.OperatingSystem;
-import org.curioswitch.gradle.helpers.platform.PlatformHelper;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -101,22 +98,10 @@ public class UploadCodeCovCacheTask extends DefaultTask {
             throw new UncheckedIOException("Could not read coverage report dump", e);
           }
 
-          var toolManager = DownloadedToolManager.get(getProject());
-
-          String gsutil =
-              new PlatformHelper().getOs() == OperatingSystem.WINDOWS ? "gsutil.cmd" : "gsutil";
           exec.executable("bash");
-
           exec.args(
               "-c",
-              "tar -cpzf - "
-                  + String.join(" ", coverageFiles)
-                  + " | "
-                  + gsutil
-                  + " cp - "
-                  + dest.get());
-
-          toolManager.addAllToPath(exec);
+              "tar -cpzf - " + String.join(" ", coverageFiles) + " | gsutil cp - " + dest.get());
         });
   }
 }

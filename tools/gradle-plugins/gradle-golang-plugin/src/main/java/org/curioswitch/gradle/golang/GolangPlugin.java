@@ -31,12 +31,9 @@ import com.google.common.collect.ImmutableList;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Paths;
 import java.util.List;
-import org.curioswitch.gradle.conda.exec.CondaExecUtil;
 import org.curioswitch.gradle.golang.tasks.GoTask;
 import org.curioswitch.gradle.golang.tasks.GoTestTask;
 import org.curioswitch.gradle.golang.tasks.JibTask;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -44,7 +41,6 @@ import org.gradle.api.Rule;
 import org.gradle.api.Task;
 import org.gradle.api.UnknownTaskException;
 import org.gradle.api.plugins.BasePlugin;
-import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
 
@@ -54,12 +50,9 @@ public class GolangPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project project) {
-    project.getRootProject().getPlugins().apply(GolangSetupPlugin.class);
-
     project.getPlugins().apply(BasePlugin.class);
 
     var golang = GolangExtension.createAndAdd(project);
-    var toolManager = DownloadedToolManager.get(project);
 
     project
         .getTasks()
@@ -86,24 +79,7 @@ public class GolangPlugin implements Plugin<Project> {
               }
             });
 
-    var setupGo = DownloadToolUtil.getSetupTask(project, "go");
-    setupGo.configure(t -> t.dependsOn(DownloadToolUtil.getSetupTask(project, "miniconda-build")));
-
-    project.getTasks().withType(GoTask.class).configureEach(t -> t.dependsOn(setupGo));
-
     project.getRootProject().mkdir("build");
-
-    project
-        .getExtensions()
-        .getByType(ExtraPropertiesExtension.class)
-        .set(
-            "gopath",
-            project
-                .getGradle()
-                .getGradleUserHomeDir()
-                .toPath()
-                .resolve("curiostack")
-                .resolve("gopath"));
 
     var downloadDeps =
         project
@@ -161,19 +137,7 @@ public class GolangPlugin implements Plugin<Project> {
             });
 
     var goTest =
-        project
-            .getTasks()
-            .register(
-                "goTest",
-                GoTestTask.class,
-                t -> {
-                  t.execCustomizer(
-                      exec -> CondaExecUtil.condaExec(exec, toolManager, golang.getConda().get()));
-
-                  t.dependsOn(
-                      DownloadToolUtil.getSetupTask(project, golang.getConda().get()),
-                      downloadDeps);
-                });
+        project.getTasks().register("goTest", GoTestTask.class, t -> t.dependsOn(downloadDeps));
 
     var goBuildAll = project.getTasks().register("goBuildAll");
     project
@@ -230,15 +194,9 @@ public class GolangPlugin implements Plugin<Project> {
                                   if (!goArch.isEmpty()) {
                                     exec.environment("GOARCH", goArch);
                                   }
-                                  CondaExecUtil.condaExec(
-                                      exec,
-                                      DownloadedToolManager.get(project),
-                                      golang.getConda().get());
                                 });
 
-                            t.dependsOn(
-                                DownloadToolUtil.getSetupTask(project, golang.getConda().get()),
-                                downloadDeps);
+                            t.dependsOn(downloadDeps);
                           });
               project
                   .getTasks()

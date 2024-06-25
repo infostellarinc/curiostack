@@ -33,7 +33,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.curioswitch.gradle.conda.exec.CondaExecUtil;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
@@ -82,8 +81,6 @@ public class UploadToCodeCovTask extends DefaultTask {
                   getCodeCovReportFile().getAbsolutePath());
 
               exec.setIgnoreExitValue(true);
-
-              CondaExecUtil.condaExec(exec, getProject());
             });
 
     getProject()
@@ -107,8 +104,6 @@ public class UploadToCodeCovTask extends DefaultTask {
               }
 
               exec.setIgnoreExitValue(true);
-
-              CondaExecUtil.condaExec(exec, getProject());
             });
   }
 }

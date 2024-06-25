@@ -31,14 +31,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.apache.tools.ant.taskdefs.condition.Os;
+import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.plugins.grpcapi.tasks.PackageWebTask;
 import org.curioswitch.gradle.plugins.nodejs.NodePlugin;
 import org.curioswitch.gradle.protobuf.ProtobufExtension;
 import org.curioswitch.gradle.protobuf.ProtobufPlugin;
-import org.curioswitch.gradle.protobuf.tasks.GenerateProtoTask;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.BasePluginConvention;
@@ -71,15 +68,11 @@ public class GrpcApiPlugin implements Plugin<Project> {
     }
   }
 
-  private static final boolean IS_WINDOWS = Os.isFamily(Os.FAMILY_WINDOWS);
-
   private static final List<String> GRPC_DEPENDENCIES =
       Collections.unmodifiableList(Arrays.asList("grpc-core", "grpc-protobuf", "grpc-stub"));
 
   @Override
   public void apply(Project project) {
-    project.getRootProject().getPlugins().apply(GrpcApiSetupPlugin.class);
-
     project.getPlugins().apply(JavaLibraryPlugin.class);
     project.getPlugins().apply(ProtobufPlugin.class);
     project.getPlugins().apply(NodePlugin.class);
@@ -134,21 +127,11 @@ public class GrpcApiPlugin implements Plugin<Project> {
                           .getPath()
                           .set(
                               project.file(
-                                  DownloadedToolManager.get(project)
-                                      .getToolDir("protoc-gen-grpc-web")
-                                      .resolve(
-                                          "protoc-gen-grpc-web" + (IS_WINDOWS ? ".exe" : ""))));
+                                  PathUtil.getExecutablePath(project, "protoc-gen-grpc-web")));
                       language.option("import_style=commonjs+dts");
                       language.option("mode=grpcweb");
                       language.getOutputDir().set(project.file("build/webprotos"));
                     });
-            project
-                .getTasks()
-                .withType(GenerateProtoTask.class)
-                .configureEach(
-                    t ->
-                        t.execOverride(
-                            exec -> DownloadedToolManager.get(project).addAllToPath(exec)));
           }
         });
 
@@ -156,8 +139,6 @@ public class GrpcApiPlugin implements Plugin<Project> {
     project.afterEvaluate(
         p -> {
           if (config.getWeb().get()) {
-            var installProtocGenGrpcWeb =
-                DownloadToolUtil.getSetupTask(project, "protoc-gen-grpc-web");
             var generateProto = project.getTasks().named("generateProto");
 
             var packageWeb =
@@ -172,8 +153,7 @@ public class GrpcApiPlugin implements Plugin<Project> {
                           t.getPackageJsonTemplate().set(PACKAGE_JSON_TEMPLATE);
                         });
 
-            generateProto.configure(
-                t -> t.dependsOn(installProtocGenGrpcWeb).finalizedBy(packageWeb));
+            generateProto.configure(t -> t.finalizedBy(packageWeb));
 
             project
                 .getRootProject()

@@ -34,22 +34,13 @@ public class ToolDependencies {
   private static final Map<String, String> DEFAULT_VERSIONS =
       ImmutableMap.<String, String>builder()
           .put("bom", "0.9.2")
-          .put("gcloud", "351.0.0")
-          .put("golang", "1.16.7")
           .put("google-java-format", "1.15.0")
           .put("gradle", "7.4.1")
-          .put("miniconda", "Miniconda3-py39_4.10.3")
-          .put("node", "14.17.4")
           .put("openjdk", "17")
-          .put("yarn", "1.22.5")
           .build();
 
   public static String getBomVersion(Project project) {
     return getVersion("bom", project);
-  }
-
-  public static String getGcloudVersion(Project project) {
-    return getVersion("gcloud", project);
   }
 
   public static String getGoogleJavaFormatVersion(Project project) {
@@ -60,24 +51,8 @@ public class ToolDependencies {
     return getVersion("gradle", project);
   }
 
-  public static String getGolangVersion(Project project) {
-    return getVersion("golang", project);
-  }
-
-  public static String getMinicondaVersion(Project project) {
-    return getVersion("miniconda", project);
-  }
-
-  public static String getNodeVersion(Project project) {
-    return getVersion("node", project);
-  }
-
   public static String getOpenJdkVersion(Project project) {
     return getVersion("openjdk", project);
-  }
-
-  public static String getYarnVersion(Project project) {
-    return getVersion("yarn", project);
   }
 
   public static String getDefaultVersion(String tool) {

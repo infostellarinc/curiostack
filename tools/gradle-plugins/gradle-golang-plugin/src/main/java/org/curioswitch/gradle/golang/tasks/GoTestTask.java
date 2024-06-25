@@ -91,7 +91,8 @@ public class GoTestTask extends GoTask {
             .collect(toImmutableSet());
 
     var args = new ImmutableList.Builder<String>();
-    args.add("test", String.join(" ", goDirectories));
+    args.add("test");
+    args.addAll(goDirectories);
     if (coverage) {
       args.add("-coverprofile=" + coverageFile.toString(), "-covermode=atomic", "-coverpkg=all");
     }

@@ -53,7 +53,6 @@ import org.curioswitch.gradle.golang.tasks.JibTask;
 import org.curioswitch.gradle.plugins.ci.tasks.FetchCodeCovCacheTask;
 import org.curioswitch.gradle.plugins.ci.tasks.UploadCodeCovCacheTask;
 import org.curioswitch.gradle.plugins.ci.tasks.UploadToCodeCovTask;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -260,7 +259,6 @@ public class CurioGenericCiPlugin implements Plugin<Project> {
                 "uploadToCodeCov",
                 UploadToCodeCovTask.class,
                 t -> {
-                  t.dependsOn(DownloadToolUtil.getSetupTask(project, "miniconda-build"));
                   if (state.isMasterBuild()) {
                     t.finalizedBy(uploadCodeCovCache);
                   }

@@ -24,16 +24,12 @@
 
 package org.curioswitch.gradle.plugins.gcloud.tasks;
 
-import org.apache.tools.ant.taskdefs.condition.Os;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.tasks.TaskAction;
 
 /** A {@link org.gradle.api.Task} that executes a kubectl command. */
 public class KubectlTask extends DefaultTask {
-
-  private static final String COMMAND = "kubectl";
 
   private final ListProperty<String> args;
 
@@ -62,21 +58,13 @@ public class KubectlTask extends DefaultTask {
 
   @TaskAction
   public void exec() {
-    String command = Os.isFamily(Os.FAMILY_WINDOWS) ? COMMAND + ".exe" : COMMAND;
-    var toolManager = DownloadedToolManager.get(getProject());
-    String executable = toolManager.getBinDir("gcloud").resolve(command).toString();
     getProject()
         .exec(
             exec -> {
-              exec.executable(executable);
+              exec.executable("kubectl");
               exec.args(args.get());
-              exec.environment(
-                  "CLOUDSDK_PYTHON", toolManager.getBinDir("miniconda-build").resolve("python"));
-              exec.environment("CLOUDSDK_PYTHON_SITEPACKAGES", "1");
               exec.setStandardInput(System.in);
               exec.setIgnoreExitValue(ignoreExitValue);
-
-              toolManager.addAllToPath(exec);
             });
   }
 }

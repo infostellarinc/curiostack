@@ -26,8 +26,6 @@ package org.curioswitch.gradle.plugins.curiostack;
 
 import static org.curioswitch.gradle.testing.assertj.CurioGradleAssertions.assertThat;
 
-import com.google.common.io.Resources;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateIntelliJSdksTask;
@@ -35,7 +33,6 @@ import org.curioswitch.gradle.testing.ResourceProjects;
 import org.gradle.testkit.runner.GradleRunner;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -52,27 +49,6 @@ class CuriostackRootPluginTest {
     void copyProject() {
       projectDir =
           ResourceProjects.fromResources("test-projects/gradle-curiostack-plugin/kitchen-sink");
-    }
-
-    @Test
-    // TODO(choko): Enable after figuring out how to mock AdoptOpenJDK API.
-    @Disabled
-    void updatesWrapper() throws Exception {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments("wrapper")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":wrapper", ":curioUpdateWrapper");
-
-      assertThat(Files.readAllLines(projectDir.resolve("gradlew")))
-          .contains(". ./gradle/get-jdk.sh");
-      assertThat(projectDir.resolve("gradle/get-jdk.sh"))
-          .hasContent(
-              Resources.toString(
-                  Resources.getResource("gradle-wrapper/rendered-get-jdk.sh"),
-                  StandardCharsets.UTF_8));
     }
 
     @Test

@@ -32,8 +32,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":tools:gradle-plugins:gradle-conda-plugin"))
-    implementation(project(":tools:gradle-plugins:gradle-tool-downloader-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-helpers"))
 
     implementation("com.google.cloud.tools:jib-build-plan:0.4.0")

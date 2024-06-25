@@ -24,15 +24,10 @@
 
 package org.curioswitch.gradle.plugins.nodejs.tasks;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import org.curioswitch.gradle.conda.exec.CondaExecUtil;
 import org.curioswitch.gradle.helpers.exec.ExternalExecUtil;
-import org.curioswitch.gradle.helpers.platform.OperatingSystem;
-import org.curioswitch.gradle.helpers.platform.PlatformHelper;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.ListProperty;
@@ -93,24 +88,9 @@ public class NodeTask extends DefaultTask {
         getProject(),
         workerExecutor,
         exec -> {
-          var toolManager = DownloadedToolManager.get(getProject());
-          String command = this.command.get();
-          if (new PlatformHelper().getOs() == OperatingSystem.WINDOWS) {
-            if (command.equals("node")) {
-              command += ".exe";
-            } else {
-              command += ".cmd";
-            }
-          }
-          Path binDir = toolManager.getBinDir("node");
-          exec.executable(binDir.resolve(command));
+          exec.executable(this.command.get());
           exec.args(args.get());
-
-          toolManager.addAllToPath(
-              exec, getProject().getRootProject().file("node_modules/.bin").toPath());
-
           execOverrides.forEach(o -> o.execute(exec));
-          CondaExecUtil.condaExec(exec, getProject());
         });
   }
 }

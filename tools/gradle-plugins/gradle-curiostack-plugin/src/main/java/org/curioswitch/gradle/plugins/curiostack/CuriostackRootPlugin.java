@@ -65,27 +65,18 @@ import net.ltgt.gradle.nullaway.NullAwayPlugin;
 import nu.studer.gradle.jooq.JooqPlugin;
 import nu.studer.gradle.jooq.JooqTask;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.curioswitch.gradle.conda.CondaBuildEnvPlugin;
-import org.curioswitch.gradle.conda.CondaExtension;
-import org.curioswitch.gradle.conda.CondaPlugin;
 import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
-import org.curioswitch.gradle.golang.GolangSetupPlugin;
-import org.curioswitch.gradle.golang.tasks.JibTask;
+import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
-import org.curioswitch.gradle.plugins.curiostack.tasks.CreateShellConfigTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.GenerateApiServerTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.SetupGitHooks;
-import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateGradleWrapperTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateIntelliJSdksTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateProjectSettingsTask;
 import org.curioswitch.gradle.plugins.gcloud.GcloudPlugin;
 import org.curioswitch.gradle.plugins.nodejs.NodePlugin;
 import org.curioswitch.gradle.plugins.nodejs.util.NodeUtil;
 import org.curioswitch.gradle.release.ReleasePlugin;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.ToolDownloaderPlugin;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -258,14 +249,11 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     PluginContainer plugins = rootProject.getPlugins();
     // Provides useful tasks like 'clean', 'assemble' to the root project.
     plugins.apply(BasePlugin.class);
-
-    plugins.apply(CondaBuildEnvPlugin.class);
     plugins.apply(CurioGenericCiPlugin.class);
     plugins.apply(GcloudPlugin.class);
     plugins.apply(IdeaPlugin.class);
     plugins.apply(NodePlugin.class);
     plugins.apply(ReleasePlugin.class);
-    plugins.apply(ToolDownloaderPlugin.class);
     plugins.apply("com.google.cloud.artifactregistry.gradle-plugin");
 
     rootProject
@@ -284,36 +272,19 @@ public class CuriostackRootPlugin implements Plugin<Project> {
 
     rootProject.getRepositories().mavenLocal();
 
-    var updateGradleWrapper =
-        rootProject.getTasks().register("curioUpdateWrapper", UpdateGradleWrapperTask.class);
-
     rootProject
         .getTasks()
         .withType(Wrapper.class)
         .configureEach(
             wrapper -> {
-              wrapper.setGradleVersion(ToolDependencies.getGradleVersion(rootProject));
+              wrapper.setGradleVersion(rootProject.getGradle().getGradleVersion());
               wrapper.setDistributionType(DistributionType.ALL);
-
-              wrapper.finalizedBy(updateGradleWrapper);
             });
 
     rootProject.getTasks().register("setupGitHooks", SetupGitHooks.class);
-    var updateShellConfig =
-        rootProject.getTasks().register("updateShellConfig", CreateShellConfigTask.class);
-    DownloadToolUtil.getDownloadTask(rootProject, "miniconda-build")
-        .configure(t -> t.finalizedBy(updateShellConfig));
-    rootProject
-        .getTasks()
-        .named("condaInstallPackagesMinicondaBuild", t -> t.mustRunAfter(updateShellConfig));
 
     var updateIntelliJJdks =
-        rootProject
-            .getTasks()
-            .register(
-                UpdateIntelliJSdksTask.NAME,
-                UpdateIntelliJSdksTask.class,
-                t -> t.dependsOn(updateGradleWrapper));
+        rootProject.getTasks().register(UpdateIntelliJSdksTask.NAME, UpdateIntelliJSdksTask.class);
 
     var idea = rootProject.getTasks().named("idea");
     idea.configure(task -> task.dependsOn(updateIntelliJJdks));
@@ -324,8 +295,6 @@ public class CuriostackRootPlugin implements Plugin<Project> {
             "setup",
             t -> {
               t.dependsOn(idea);
-              t.dependsOn(rootProject.getTasks().named("toolsSetupAll"));
-              t.dependsOn(updateShellConfig);
             });
 
     var updateProjectSettings =
@@ -407,54 +376,12 @@ public class CuriostackRootPlugin implements Plugin<Project> {
                             jib ->
                                 jib.getCredentialHelper()
                                     .set(
-                                        DownloadedToolManager.get(project)
-                                            .getBinDir("gcloud")
-                                            .resolve("docker-credential-gcr")));
-
-                    project
-                        .getTasks()
-                        .withType(JibTask.class)
-                        .configureEach(
-                            t ->
-                                t.dependsOn(
-                                    project.getRootProject().getTasks().getByName("gcloudSetup")));
+                                        PathUtil.getExecutablePath(
+                                            project, "docker-credential-gcr")));
                   });
         });
 
     setupDataSources(rootProject);
-
-    rootProject
-        .getPlugins()
-        .withType(
-            GolangSetupPlugin.class,
-            unused ->
-                rootProject
-                    .getPlugins()
-                    .withType(
-                        ToolDownloaderPlugin.class,
-                        plugin ->
-                            plugin
-                                .tools()
-                                .named("go")
-                                .configure(
-                                    tool ->
-                                        tool.getVersion()
-                                            .set(ToolDependencies.getGolangVersion(rootProject)))));
-
-    rootProject
-        .getPlugins()
-        .withType(
-            CondaPlugin.class,
-            plugin ->
-                plugin
-                    .getCondas()
-                    .withType(CondaExtension.class)
-                    .named("miniconda-build")
-                    .configure(
-                        conda ->
-                            conda
-                                .getVersion()
-                                .set(ToolDependencies.getMinicondaVersion(rootProject))));
 
     setupSpotless(rootProject);
   }

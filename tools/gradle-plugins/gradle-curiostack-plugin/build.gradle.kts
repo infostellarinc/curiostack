@@ -34,12 +34,10 @@ plugins {
 
 dependencies {
     implementation(project(":common:google-cloud:cloud-storage"))
-    implementation(project(":tools:gradle-plugins:gradle-conda-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-golang-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-protobuf-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-helpers"))
     implementation(project(":tools:gradle-plugins:gradle-release-plugin"))
-    implementation(project(":tools:gradle-plugins:gradle-tool-downloader-plugin"))
 
     implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin")
     implementation("com.bmuschko:gradle-docker-plugin")
@@ -58,8 +56,6 @@ dependencies {
     implementation("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin")
     implementation("gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin")
     implementation("me.champeau.gradle:jmh-gradle-plugin")
-    implementation("net.adoptopenjdk:net.adoptopenjdk.v3.api")
-    implementation("net.adoptopenjdk:net.adoptopenjdk.v3.vanilla")
     implementation("net.ltgt.gradle:gradle-errorprone-plugin")
     implementation("net.ltgt.gradle:gradle-nullaway-plugin")
     implementation("nu.studer:gradle-jooq-plugin")
