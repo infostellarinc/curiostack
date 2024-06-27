@@ -38,15 +38,43 @@ pluginManagement {
     }
 
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
+        mavenCentral {
+            content {
+                excludeModuleByRegex("org\\.curioswitch\\..*", "(?!protobuf-jackson)")
+            }
+        }
+        gradlePluginPortal {
+            content {
+                excludeModuleByRegex("org\\.curioswitch\\..*", "(?!protobuf-jackson)")
+            }
+        }
+        maven {
+            url = uri((extra.properties["org.curioswitch.curiostack.repo_uri"] as String).replace("artifactregistry://", "https://"))
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
+            credentials {
+                username = "oauth2accesstoken"
+                password = java.io.ByteArrayOutputStream().use { output ->
+                    try {
+                        exec {
+                            commandLine("gcloud", "auth", "print-access-token")
+                            standardOutput = output
+                        }
+                        output.toString()
+                    } catch (e: Throwable) {
+                        error("gcloud cli authentication failed: ${e.message}")
+                    }
+                }
+            }
+        }
         mavenLocal()
     }
 }
 
 plugins {
     id("com.gradle.enterprise").version("3.6.3")
-    id("org.curioswitch.gradle-curiostack-plugin").version("0.9.1")
+    id("org.curioswitch.gradle-curiostack-plugin").version("0.9.2")
     id("com.google.cloud.artifactregistry.gradle-plugin").version("2.2.1")
 }
 

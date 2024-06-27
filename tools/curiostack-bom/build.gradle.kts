@@ -37,7 +37,14 @@ javaPlatform {
 }
 
 repositories {
-    gradlePluginPortal()
+        gradlePluginPortal {
+                content {
+                        excludeModuleByRegex("org\\.curioswitch\\..*", "(?!protobuf-jackson)")
+                }
+        }
+        maven {
+                url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
+        }
 }
 
 data class DependencySet(val group: String, val version: String, val modules: List<String>)
