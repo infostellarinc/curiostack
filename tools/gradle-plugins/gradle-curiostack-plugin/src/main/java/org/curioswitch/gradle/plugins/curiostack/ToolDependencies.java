@@ -36,7 +36,6 @@ public class ToolDependencies {
           .put("bom", "0.9.2")
           .put("google-java-format", "1.15.0")
           .put("gradle", "7.4.1")
-          .put("openjdk", "17")
           .build();
 
   public static String getBomVersion(Project project) {
@@ -49,14 +48,6 @@ public class ToolDependencies {
 
   public static String getGradleVersion(Project project) {
     return getVersion("gradle", project);
-  }
-
-  public static String getOpenJdkVersion(Project project) {
-    return getVersion("openjdk", project);
-  }
-
-  public static String getDefaultVersion(String tool) {
-    return DEFAULT_VERSIONS.getOrDefault(tool, "");
   }
 
   private static String getVersion(String tool, Project project) {

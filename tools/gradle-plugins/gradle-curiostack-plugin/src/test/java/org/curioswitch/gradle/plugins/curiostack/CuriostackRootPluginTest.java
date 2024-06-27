@@ -28,7 +28,6 @@ import static org.curioswitch.gradle.testing.assertj.CurioGradleAssertions.asser
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateIntelliJSdksTask;
 import org.curioswitch.gradle.testing.ResourceProjects;
 import org.gradle.testkit.runner.GradleRunner;
 import org.jsoup.Jsoup;
@@ -108,42 +107,6 @@ class CuriostackRootPluginTest {
                   .withPluginClasspath())
           .builds()
           .tasksDidSucceed(":updateNodeResolutions");
-    }
-  }
-
-  @SuppressWarnings("ClassCanBeStatic")
-  @Nested
-  // Temporarily disable to investigate build failures.
-  @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
-  class ConfiguresIntelliJProject {
-
-    private Path projectDir;
-
-    @BeforeAll
-    void copyProject() {
-      projectDir =
-          ResourceProjects.fromResources("test-projects/gradle-curiostack-plugin/kitchen-sink");
-    }
-
-    @Test
-    void normal() throws Exception {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(
-                      "idea", "-xtoolsDownloadOpenjdk", "-x" + UpdateIntelliJSdksTask.NAME)
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":idea");
-
-      final Path projectFile;
-      try (var s = Files.list(projectDir)) {
-        projectFile = s.filter(p -> p.toString().endsWith(".ipr")).findFirst().get();
-      }
-
-      // Make sure copyright is escaped correctly.
-      assertThat(Files.readString(projectFile))
-          .contains("<option name=\"notice\" value=\"MIT License&#10;&#10;Copyright");
     }
   }
 }
