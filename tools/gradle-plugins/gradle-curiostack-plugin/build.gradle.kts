@@ -53,7 +53,7 @@ dependencies {
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties")
     implementation("com.hubspot.jinjava:jinjava")
     implementation("gradle.plugin.com.boxfuse.client:gradle-plugin-publishing")
-    implementation("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin")
+    implementation("com.google.cloud.tools:jib-gradle-plugin")
     implementation("gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin")
     implementation("me.champeau.gradle:jmh-gradle-plugin")
     implementation("net.ltgt.gradle:gradle-errorprone-plugin")
@@ -68,8 +68,8 @@ dependencies {
     runtimeOnly("io.grpc:grpc-netty-shaded")
 
     // Flyway plugin uses the gradle classpath, so adding this allows flyway to access cloud sql.
-    runtimeOnly("com.google.cloud.sql:mysql-socket-factory")
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.google.cloud.sql:mysql-socket-factory-connector-j-8")
+    runtimeOnly("com.mysql:mysql-connector-j")
 
     compileOnly(project(":common:curio-helpers"))
 

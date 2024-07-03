@@ -55,11 +55,11 @@ val PROTOBUF_VERSION = "3.25.3" // 4.26.1
 val DEPENDENCY_BOMS = listOf(
         "com.fasterxml.jackson:jackson-bom:2.17.1",
         "com.google.cloud:google-cloud-bom:0.220.0",
-        "com.google.api-client:google-api-client-bom:1.35.2", // 2.5.1
-        "com.google.guava:guava-bom:31.1-jre", // 33.2.0-jre
+        "com.google.api-client:google-api-client-bom:2.5.1",
+        "com.google.guava:guava-bom:33.2.0-jre",
         "com.google.http-client:google-http-client-bom:1.44.2",
         "com.google.protobuf:protobuf-bom:${PROTOBUF_VERSION}",
-        "com.linecorp.armeria:armeria-bom:1.27.3", // 1.28.4 - From 1.28.0 support for com.linecorp.armeria:armeria-brave is removed
+        "com.linecorp.armeria:armeria-bom:1.28.4",
         "io.dropwizard.metrics:metrics-bom:4.2.25",
         "io.grpc:grpc-bom:${GRPC_VERSION}",
         "io.micrometer:micrometer-bom:1.13.0",
@@ -73,7 +73,7 @@ val DEPENDENCY_BOMS = listOf(
 val DEPENDENCY_SETS = listOf(
         DependencySet(
                 "com.auth0",
-                "3.19.4", // 4.4.0
+                "4.4.0",
                 listOf("java-jwt")
         ),
         DependencySet(
@@ -115,11 +115,8 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "com.google.cloud.sql",
-                "1.4.4", // 1.18.1
-                listOf(
-                        "mysql-socket-factory", // com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.18.1
-                        "mysql-socket-factory-connector-j-8"
-                )
+                "1.18.1",
+                listOf("mysql-socket-factory-connector-j-8")
         ),
         DependencySet(
                 "com.google.dagger",
@@ -133,7 +130,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "com.google.firebase",
-                "8.2.0", // 9.2.0
+                "9.3.0",
                 listOf("firebase-admin")
         ),
         DependencySet(
@@ -203,7 +200,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "jakarta.annotation",
-                "1.3.5",
+                "3.0.0",
                 listOf("jakarta.annotation-api")
         ),
         DependencySet(
@@ -215,11 +212,6 @@ val DEPENDENCY_SETS = listOf(
                 "junit",
                 "4.13.2", // org.junit.jupiter:junit-jupiter-api:5.10.2
                 listOf("junit")
-        ),
-        DependencySet(
-                "net.adoptopenjdk",
-                "0.4.0", // Last update 2020-06-20
-                listOf("net.adoptopenjdk.v3.api", "net.adoptopenjdk.v3.vanilla")
         ),
         DependencySet(
                 "org.assertj",
@@ -248,8 +240,8 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.checkerframework",
-                "2.5.5", // org.checkerframework:checker-qual:3.43.0
-                listOf("checker-compat-qual")
+                "3.43.0",
+                listOf("checker-qual")
         ),
         DependencySet(
                 "org.eclipse.jgit",
@@ -263,7 +255,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.jctools",
-                "3.3.0", // 4.0.3
+                "4.0.3",
                 listOf("jctools-core")
         ),
         DependencySet(
@@ -278,7 +270,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.slf4j",
-                "1.7.36", // 2.0.13
+                "2.0.13",
                 listOf("jul-to-slf4j", "slf4j-api")
         ),
         DependencySet(
@@ -292,7 +284,7 @@ val DEPENDENCY_SETS = listOf(
 
 val DEPENDENCIES = listOf(
         "gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.1",
-        "com.bmuschko:gradle-docker-plugin:7.4.0", // 9.4.0
+        "com.bmuschko:gradle-docker-plugin:9.4.0",
         "com.diffplug.spotless:spotless-plugin-gradle:6.25.0",
         "com.github.ben-manes:gradle-versions-plugin:0.51.0",
         "com.google.code.gson:gson:2.11.0",
@@ -301,22 +293,23 @@ val DEPENDENCIES = listOf(
         "com.gradle:gradle-enterprise-gradle-plugin:3.17.4",
         "com.hubspot.jinjava:jinjava:2.7.2",
         "com.uber.nullaway:nullaway:0.10.26",
-        "de.undercouch:gradle-download-task:4.1.2", // 5.6.0
+        "de.undercouch:gradle-download-task:5.6.0",
         "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:6.0.6", // Last update 2019-10-09
-        "gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:2.8.0", // 3.4.2
+        "com.google.cloud.tools:jib-gradle-plugin:3.4.3",
         "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0", // Last update 2017-04-25
         "io.sgr:s2-geometry-library-java:1.0.1", // Last update 2019-07-29
-        "it.unimi.dsi:fastutil:8.5.8", // 8.5.13
-        "javax.activation:activation:1.1.1", // jakarta.activation:jakarta.activation-api:2.1.3
-        "javax.annotation:javax.annotation-api:1.3.2", // javax.annotation:javax.annotation-api:3.0.0
+        "it.unimi.dsi:fastutil:8.5.13",
+        "jakarta.activation:jakarta.activation-api:2.1.3",
+        "jakarta.annotation:jakarta.annotation-api:3.0.0",
         "me.champeau.gradle:jmh-gradle-plugin:0.5.3", // Last update 2021-02-09
-        "mysql:mysql-connector-java:8.0.33", // 8.4.0
-        "net.ltgt.gradle:gradle-errorprone-plugin:2.0.2",
-        "net.ltgt.gradle:gradle-nullaway-plugin:1.6.0",
-        "nu.studer:gradle-jooq-plugin:4.2", // 9.0 - 8+ requires java and gradle upgrade, 7.1.1 should work fine
+        "com.mysql:mysql-connector-j:8.4.0",
+        "net.ltgt.gradle:gradle-errorprone-plugin:3.1.0",
+        "net.ltgt.gradle:gradle-nullaway-plugin:2.0.0",
+        "nu.studer:gradle-jooq-plugin:7.1.1", // 9.0 - 8+ requires java and gradle upgrade
         "org.curioswitch.curiostack:protobuf-jackson:2.5.0",
         "org.ow2.asm:asm:9.7",
-        "org.jsoup:jsoup:1.17.2"
+        "org.jsoup:jsoup:1.17.2",
+        "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2",
 )
 
 val bomProject = project

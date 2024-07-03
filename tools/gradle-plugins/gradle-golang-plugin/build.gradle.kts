@@ -36,7 +36,7 @@ dependencies {
 
     implementation("com.google.cloud.tools:jib-build-plan:0.4.0")
     implementation("com.google.guava:guava")
-    implementation("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin")
+    implementation("com.google.cloud.tools:jib-gradle-plugin")
 
     compileOnly(project(":common:curio-helpers"))
 

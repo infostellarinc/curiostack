@@ -55,8 +55,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import javax.annotation.Nullable;
 import org.assertj.core.api.AbstractAssert;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class ProtoAssert<ACTUAL extends Message, SELF extends ProtoAssert<ACTUAL, SELF>>
     extends AbstractAssert<SELF, ACTUAL> implements ProtoFluentAssertion<SELF> {
@@ -265,7 +265,7 @@ public class ProtoAssert<ACTUAL extends Message, SELF extends ProtoAssert<ACTUAL
   }
 
   @Override
-  public SELF isEqualTo(@NullableDecl Object expected) {
+  public SELF isEqualTo(@Nullable Object expected) {
     if (notMessagesWithSameDescriptor(actual, expected)) {
       return super.isEqualTo(expected);
     } else {
@@ -281,7 +281,7 @@ public class ProtoAssert<ACTUAL extends Message, SELF extends ProtoAssert<ACTUAL
   }
 
   @Override
-  public SELF isNotEqualTo(@NullableDecl Object expected) {
+  public SELF isNotEqualTo(@Nullable Object expected) {
     if (notMessagesWithSameDescriptor(actual, expected)) {
       return super.isNotEqualTo(expected);
     } else {
@@ -346,7 +346,7 @@ public class ProtoAssert<ACTUAL extends Message, SELF extends ProtoAssert<ACTUAL
   }
 
   private static boolean notMessagesWithSameDescriptor(
-      @NullableDecl Message actual, @NullableDecl Object expected) {
+      @Nullable Message actual, @Nullable Object expected) {
     if (actual != null && expected instanceof Message) {
       return actual.getDescriptorForType() != ((Message) expected).getDescriptorForType();
     }

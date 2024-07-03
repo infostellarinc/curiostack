@@ -30,8 +30,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.protobuf.Message;
 import io.grpc.stub.StreamObserver;
+import javax.annotation.Nullable;
 import javax.inject.Provider;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.curioswitch.common.server.framework.grpc.GrpcProductionComponent.GrpcProductionComponentBuilder;
 
 /** A utility for using gRPC with producer graphs. */

@@ -62,8 +62,8 @@ import net.ltgt.gradle.errorprone.ErrorProneOptions;
 import net.ltgt.gradle.errorprone.ErrorPronePlugin;
 import net.ltgt.gradle.nullaway.NullAwayOptions;
 import net.ltgt.gradle.nullaway.NullAwayPlugin;
+import nu.studer.gradle.jooq.JooqGenerate;
 import nu.studer.gradle.jooq.JooqPlugin;
-import nu.studer.gradle.jooq.JooqTask;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
@@ -644,17 +644,17 @@ public class CuriostackRootPlugin implements Plugin<Project> {
             unused ->
                 project
                     .getTasks()
-                    .withType(JooqTask.class)
+                    .withType(JooqGenerate.class)
                     .configureEach(
                         t -> {
                           for (String dependency :
                               ImmutableList.of(
                                   "javax.activation:activation",
-                                  "mysql:mysql-connector-java",
+                                  "com.mysql:mysql-connector-j",
                                   // Not sure why this isn't automatically added.
                                   "com.google.guava:guava",
-                                  "com.google.cloud.sql:mysql-socket-factory")) {
-                            project.getDependencies().add("jooqRuntime", dependency);
+                                  "com.google.cloud.sql:mysql-socket-factory-connector-j-8")) {
+                            project.getDependencies().add("jooqGenerator", dependency);
                           }
                         }));
 
@@ -822,7 +822,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     Configuration configuration = project.getConfigurations().create("jdbcDrivers");
     project
         .getDependencies()
-        .add(configuration.getName(), "com.google.cloud.sql:mysql-socket-factory");
+        .add(configuration.getName(), "com.google.cloud.sql:mysql-socket-factory-connector-j-8");
     project
         .getTasks()
         .register(

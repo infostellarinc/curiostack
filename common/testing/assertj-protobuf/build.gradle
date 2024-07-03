@@ -40,7 +40,7 @@ dependencies {
     annotationProcessor 'com.google.auto.value:auto-value'
     compileOnly 'com.google.auto.value:auto-value-annotations'
 
-    compileOnly 'org.checkerframework:checker-compat-qual'
+    compileOnly 'org.checkerframework:checker-qual'
 }
 
 publishing {

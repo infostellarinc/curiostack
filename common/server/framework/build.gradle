@@ -52,6 +52,7 @@ dependencies {
     api 'org.apache.logging.log4j:log4j-api'
     api 'org.jooq:jooq'
     api 'org.simpleflatmapper:sfm-jooq'
+    api 'jakarta.xml.bind:jakarta.xml.bind-api'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
@@ -59,7 +60,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.github.ben-manes.caffeine:caffeine'
     implementation 'com.google.protobuf:protobuf-java'
-    implementation 'com.linecorp.armeria:armeria-brave'
+    implementation 'com.linecorp.armeria:armeria-brave5'
     implementation 'com.linecorp.armeria:armeria-grpc'
     implementation 'com.zaxxer:HikariCP'
     implementation 'io.zipkin.brave:brave-instrumentation-mysql8'
@@ -78,8 +79,8 @@ dependencies {
     implementation 'org.jctools:jctools-core'
     implementation 'org.ow2.asm:asm:9.2'
 
-    runtimeOnly 'com.google.cloud.sql:mysql-socket-factory'
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.google.cloud.sql:mysql-socket-factory-connector-j-8'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     annotationProcessor 'com.google.auto.factory:auto-factory'
     compileOnly 'com.google.auto.factory:auto-factory'
