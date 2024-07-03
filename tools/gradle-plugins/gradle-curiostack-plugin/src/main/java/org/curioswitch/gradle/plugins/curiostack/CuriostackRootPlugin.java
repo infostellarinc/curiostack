@@ -276,7 +276,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
         .withType(Wrapper.class)
         .configureEach(
             wrapper -> {
-              wrapper.setGradleVersion(rootProject.getGradle().getGradleVersion());
+              wrapper.setGradleVersion(ToolDependencies.getGradleVersion(rootProject));
               wrapper.setDistributionType(DistributionType.ALL);
             });
 
