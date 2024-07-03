@@ -956,7 +956,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
             .orElseGet(
                 () -> inspectionManager.appendNode("profile", ImmutableMap.of("version", "1.0")));
     setOption(profile, "myName", "Project Default");
-    Node updated =
+    var unused =
         findChild(
                 profile,
                 n -> n.name().equals("inspection_tool") && "Eslint".equals(n.attribute("class")))

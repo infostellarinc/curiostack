@@ -372,7 +372,7 @@ public class CurioGenericCiPlugin implements Plugin<Project> {
       if (branch.equals("master")) {
         affectedRelativeFilePaths = computeAffectedFilesForMaster(git, project);
       } else {
-        affectedRelativeFilePaths = computeAffectedFilesForBranch(git, branch, project);
+        affectedRelativeFilePaths = computeAffectedFilesForCurrentBranch(git, project);
       }
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -411,8 +411,8 @@ public class CurioGenericCiPlugin implements Plugin<Project> {
         "Could not find project for a file in the project, this cannot happen: " + filePath);
   }
 
-  private static Set<String> computeAffectedFilesForBranch(
-      Git git, String branch, Project rootProject) throws IOException {
+  private static Set<String> computeAffectedFilesForCurrentBranch(Git git, Project rootProject)
+      throws IOException {
     String masterRemote =
         git.getRepository().getRemoteNames().contains("upstream") ? "upstream" : "origin";
     CanonicalTreeParser oldTreeParser =

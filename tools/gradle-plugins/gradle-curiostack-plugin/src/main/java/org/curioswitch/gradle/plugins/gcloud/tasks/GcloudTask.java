@@ -25,7 +25,6 @@
 package org.curioswitch.gradle.plugins.gcloud.tasks;
 
 import com.google.common.collect.ImmutableList;
-import java.util.List;
 import org.curioswitch.gradle.plugins.gcloud.GcloudExtension;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.ListProperty;
@@ -59,19 +58,18 @@ public class GcloudTask extends DefaultTask {
     GcloudExtension config =
         getProject().getRootProject().getExtensions().getByType(GcloudExtension.class);
 
-    List<Object> fullArgs =
-        ImmutableList.builder()
-            .add("--project=" + config.getClusterProject().get())
-            .add("--quiet")
-            .addAll(
-                args.get().stream().map(o -> o instanceof Provider ? ((Provider) o).get() : o)
-                    ::iterator)
-            .build();
+    ImmutableList.Builder<Object> fullArgs =
+        ImmutableList.builder().add("--project=" + config.getClusterProject().get()).add("--quiet");
+
+    args.get().stream()
+        .map(o -> o instanceof Provider ? ((Provider<?>) o).get() : o)
+        .forEachOrdered(fullArgs::add);
+
     getProject()
         .exec(
             exec -> {
               exec.executable("gcloud");
-              exec.args(fullArgs);
+              exec.args(fullArgs.build());
               exec.setStandardInput(System.in);
             });
   }

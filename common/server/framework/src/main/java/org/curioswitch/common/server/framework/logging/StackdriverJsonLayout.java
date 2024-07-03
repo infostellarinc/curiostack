@@ -95,8 +95,8 @@ public final class StackdriverJsonLayout extends AbstractJacksonLayout {
     @Override
     public StackdriverJsonLayout build() {
       final boolean encodeThreadContextAsList = isProperties() && propertiesAsList;
-      final String headerPattern = toStringOrNull(getHeader());
-      final String footerPattern = toStringOrNull(getFooter());
+      final String headerPattern = toStringValue(getHeader());
+      final String footerPattern = toStringValue(getFooter());
       return new StackdriverJsonLayout(
           getConfiguration(),
           isLocationInfo(),
@@ -231,7 +231,7 @@ public final class StackdriverJsonLayout extends AbstractJacksonLayout {
       final boolean includeStacktrace,
       final boolean stacktraceAsString,
       final boolean includeNullDelimiter,
-      final KeyValuePair[] additionalFields,
+      @Nullable final KeyValuePair[] additionalFields,
       final boolean objectMessageAsJsonObject) {
     super(
         config,

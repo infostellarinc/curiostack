@@ -196,11 +196,11 @@ abstract class AbstractJacksonLayout extends AbstractStringLayout {
       return asBuilder();
     }
 
-    @Nullable
-    protected String toStringOrNull(final byte[] header) {
-      return header == null ? null : new String(header, Charset.defaultCharset());
+    protected String toStringValue(final byte[] value) {
+      return value == null ? "" : new String(value, Charset.defaultCharset());
     }
   }
+
   /** Subclasses can annotate with Jackson annotations for JSON example. */
   public static class LogEventWithAdditionalFields {
 
@@ -246,7 +246,7 @@ abstract class AbstractJacksonLayout extends AbstractStringLayout {
   }
 
   private static ResolvableKeyValuePair[] prepareAdditionalFields(
-      final Configuration config, final KeyValuePair[] additionalFields) {
+      final Configuration config, @Nullable final KeyValuePair[] additionalFields) {
     if (additionalFields == null || additionalFields.length == 0) {
       // No fields set
       return new ResolvableKeyValuePair[0];
@@ -297,7 +297,7 @@ abstract class AbstractJacksonLayout extends AbstractStringLayout {
       final Serializer headerSerializer,
       final Serializer footerSerializer,
       final boolean includeNullDelimiter,
-      final KeyValuePair[] additionalFields) {
+      @Nullable final KeyValuePair[] additionalFields) {
     super(config, charset, headerSerializer, footerSerializer);
     this.objectWriter = objectWriter;
     this.compact = compact;

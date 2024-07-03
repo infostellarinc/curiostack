@@ -329,7 +329,7 @@ public abstract class ServerModule {
       Set<ServerShutDownDelayer> serverShutDownDelayers,
       @CloseOnStop Set<Closeable> closeOnStopDependencies,
       // Eagerly trigger bindings that are present, not actually used here.
-      @EagerInit Set<Object> eagerInitializedDependencies) {
+      @EagerInit @SuppressWarnings("unused") Set<Object> eagerInitializedDependencies) {
     for (WatchedPath watched : watchedPaths) {
       fileWatcherBuilder.registerPath(watched.getPath(), watched.getHandler());
     }
