@@ -74,7 +74,7 @@ pluginManagement {
 
 plugins {
     id("com.gradle.enterprise").version("3.6.3")
-    id("org.curioswitch.gradle-curiostack-plugin").version("0.10.0")
+    id("org.curioswitch.gradle-curiostack-plugin").version("0.10.1")
     id("com.google.cloud.artifactregistry.gradle-plugin").version("2.2.1")
 }
 
