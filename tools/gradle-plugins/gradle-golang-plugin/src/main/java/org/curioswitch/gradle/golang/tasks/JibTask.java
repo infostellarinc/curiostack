@@ -44,10 +44,10 @@ import com.google.cloud.tools.jib.api.Containerizer;
 import com.google.cloud.tools.jib.api.ImageReference;
 import com.google.cloud.tools.jib.api.Jib;
 import com.google.cloud.tools.jib.api.JibContainerBuilder;
-import com.google.cloud.tools.jib.api.LayerConfiguration;
 import com.google.cloud.tools.jib.api.LogEvent;
 import com.google.cloud.tools.jib.api.RegistryImage;
 import com.google.cloud.tools.jib.api.buildplan.AbsoluteUnixPath;
+import com.google.cloud.tools.jib.api.buildplan.FileEntriesLayer;
 import com.google.cloud.tools.jib.api.buildplan.FilePermissions;
 import com.google.cloud.tools.jib.api.buildplan.Port;
 import com.google.cloud.tools.jib.event.events.ProgressEvent;
@@ -204,8 +204,8 @@ public class JibTask extends DefaultTask {
     additionalTags.get().forEach(containerize::withAdditionalTag);
     JibContainerBuilder jib =
         Jib.from(baseImage)
-            .addLayer(
-                LayerConfiguration.builder()
+            .addFileEntriesLayer(
+                FileEntriesLayer.builder()
                     .addEntry(
                         exePath,
                         AbsoluteUnixPath.get("/opt/bin/" + exePath.getFileName()),

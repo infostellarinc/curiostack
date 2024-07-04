@@ -38,6 +38,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 class CountingSampler extends Sampler {
 
   /**
+   * Create CountingSampler
+   *
    * @param rate 0 means never sample, 1 means always sample. Otherwise minimum sample rate is 0.01,
    *     or 1% of traces
    */

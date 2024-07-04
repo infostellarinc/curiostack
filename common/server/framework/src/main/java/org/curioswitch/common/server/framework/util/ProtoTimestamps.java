@@ -39,11 +39,13 @@ import java.util.concurrent.TimeUnit;
 public final class ProtoTimestamps {
 
   /** Converts a {@link Timestamp} to {@link LocalDateTime}. */
+  @SuppressWarnings("ProtoTimestampGetSecondsGetNano")
   public static LocalDateTime toLocalDateTime(Timestamp timestamp, ZoneOffset zone) {
     return LocalDateTime.ofEpochSecond(Timestamps.toSeconds(timestamp), timestamp.getNanos(), zone);
   }
 
   /** Converts a {@link LocalDateTime} to {@link Timestamp}. */
+  @SuppressWarnings("JavaLocalDateTimeGetNano")
   public static Timestamp fromLocalDateTime(LocalDateTime localDateTime, ZoneOffset zone) {
     return Timestamps.fromNanos(
         TimeUnit.SECONDS.toNanos(localDateTime.toEpochSecond(zone)) + localDateTime.getNano());
@@ -66,6 +68,7 @@ public final class ProtoTimestamps {
   }
 
   /** Converts a {@link Timestamp} to {@link Instant}. */
+  @SuppressWarnings("ProtoTimestampGetSecondsGetNano")
   public static Instant toInstant(Timestamp timestamp) {
     return Instant.ofEpochSecond(Timestamps.toSeconds(timestamp), timestamp.getNanos());
   }

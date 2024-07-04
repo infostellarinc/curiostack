@@ -54,12 +54,12 @@ class StaticSitePluginTest {
         .tasksDidSucceed(":site1:buildSite", ":site2:buildSite", ":portal:mergeSite");
 
     assertThat(projectDir.resolve("portal/build/site/index.html"))
-        .hasSameContentAs(projectDir.resolve("portal/src/index.html"));
+        .hasSameTextualContentAs(projectDir.resolve("portal/src/index.html"));
     assertThat(projectDir.resolve("portal/build/site/index.js"))
-        .hasSameContentAs(projectDir.resolve("portal/src/index.js"));
+        .hasSameTextualContentAs(projectDir.resolve("portal/src/index.js"));
     assertThat(projectDir.resolve("portal/build/site/site1/index.html"))
-        .hasSameContentAs(projectDir.resolve("site1/build/site/index.html"));
+        .hasSameTextualContentAs(projectDir.resolve("site1/build/site/index.html"));
     assertThat(projectDir.resolve("portal/build/site/site2/index.html"))
-        .hasSameContentAs(projectDir.resolve("site2/build/customout/index.html"));
+        .hasSameTextualContentAs(projectDir.resolve("site2/build/customout/index.html"));
   }
 }

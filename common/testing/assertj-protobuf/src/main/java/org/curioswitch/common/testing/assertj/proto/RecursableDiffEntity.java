@@ -78,7 +78,8 @@ abstract class RecursableDiffEntity {
   /**
    * The children of this entity. May be empty.
    *
-   * <p>Subclasses should {@link @Memoized} this method especially if it's expensive.
+   * <p>Subclasses should {@link com.google.auto.value.extension.memoized.Memoized} this method
+   * especially if it's expensive.
    */
   abstract Iterable<? extends RecursableDiffEntity> childEntities();
 

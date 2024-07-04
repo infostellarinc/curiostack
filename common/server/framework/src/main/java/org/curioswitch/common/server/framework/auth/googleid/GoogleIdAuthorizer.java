@@ -27,7 +27,7 @@ package org.curioswitch.common.server.framework.auth.googleid;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.linecorp.armeria.common.auth.OAuth2Token;
 import com.linecorp.armeria.server.ServiceRequestContext;
 import com.linecorp.armeria.server.auth.Authorizer;
@@ -70,7 +70,7 @@ public class GoogleIdAuthorizer implements Authorizer<OAuth2Token> {
   public CompletionStage<Boolean> authorize(ServiceRequestContext ctx, OAuth2Token data) {
     final GoogleIdToken token;
     try {
-      token = GoogleIdToken.parse(JacksonFactory.getDefaultInstance(), data.accessToken());
+      token = GoogleIdToken.parse(GsonFactory.getDefaultInstance(), data.accessToken());
     } catch (IOException e) {
       logger.info("Could not parse id token {}", data.accessToken());
       return completedFuture(false);

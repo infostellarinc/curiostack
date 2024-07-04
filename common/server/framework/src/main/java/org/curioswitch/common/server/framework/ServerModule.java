@@ -37,7 +37,7 @@ import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.common.MediaType;
 import com.linecorp.armeria.common.RequestContext;
-import com.linecorp.armeria.common.auth.OAuth2Token;
+import com.linecorp.armeria.common.auth.AuthToken;
 import com.linecorp.armeria.common.grpc.GrpcSerializationFormats;
 import com.linecorp.armeria.server.HttpService;
 import com.linecorp.armeria.server.HttpServiceWithRoutes;
@@ -623,7 +623,7 @@ public abstract class ServerModule {
                   AuthService.builder()
                       .addTokenAuthorizer(
                           headers ->
-                              OAuth2Token.of(
+                              AuthToken.ofOAuth2(
                                   headers.get(HttpHeaderNames.of("x-goog-iap-jwt-assertion"))),
                           jwtAuthorizer
                               .get()

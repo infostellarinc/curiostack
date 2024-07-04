@@ -90,7 +90,7 @@ class RoutingService implements HttpService {
   @Nullable
   private WebClient find(RoutingContext mappingContext) {
     return clients.entrySet().stream()
-        .filter(entry -> entry.getKey().apply(mappingContext).isPresent())
+        .filter(entry -> entry.getKey().apply(mappingContext, false).isPresent())
         .map(Entry::getValue)
         .findFirst()
         .orElse(null);
@@ -99,6 +99,8 @@ class RoutingService implements HttpService {
   void updateClients(Map<Route, WebClient> clients) {
     logger.info("Updating router targets.");
     this.clients = clients;
-    pathClients.invalidateAll();
+    if (pathClients != null) {
+      pathClients.invalidateAll();
+    }
   }
 }

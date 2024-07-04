@@ -659,7 +659,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
   private static String valueString(FieldDescriptor fieldDescriptor, Object o) {
     StringBuilder sb = new StringBuilder();
     try {
-      TextFormat.printFieldValue(fieldDescriptor, o, sb);
+      TextFormat.printer().printFieldValue(fieldDescriptor, o, sb);
       return sb.toString();
     } catch (IOException impossible) {
       throw new AssertionError(impossible);

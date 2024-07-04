@@ -113,6 +113,7 @@ abstract class AbstractAccessTokenProvider implements AccessTokenProvider {
         .aggregate();
   }
 
+  @SuppressWarnings("JavaUtilDate")
   private CompletableFuture<AccessToken> refresh(Type type) {
     return fetchToken(type)
         .handle(
