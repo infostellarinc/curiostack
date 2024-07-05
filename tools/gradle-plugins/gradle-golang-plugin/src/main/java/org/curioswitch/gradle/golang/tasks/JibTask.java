@@ -85,7 +85,7 @@ public class JibTask extends DefaultTask {
   private final ListProperty<Integer> ports;
   private final ListProperty<String> args;
   private final Property<String> workingDir;
-  private final Property<Path> credentialHelper;
+  private final Property<String> credentialHelper;
   private final MapProperty<String, String> environmentVariables;
 
   public JibTask() {
@@ -100,7 +100,7 @@ public class JibTask extends DefaultTask {
     ports = objects.listProperty(Integer.class);
     args = objects.listProperty(String.class);
     workingDir = objects.property(String.class);
-    credentialHelper = objects.property(Path.class);
+    credentialHelper = objects.property(String.class);
     environmentVariables = objects.mapProperty(String.class, String.class);
 
     var jib = getProject().getExtensions().getByType(GolangExtension.class).getJib();

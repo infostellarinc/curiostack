@@ -32,7 +32,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.gorylenko.GitPropertiesPlugin;
 import java.util.Set;
-import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.helpers.task.TaskUtil;
 import org.curioswitch.gradle.plugins.ci.CiState;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
@@ -87,8 +86,7 @@ public class CurioServerPlugin implements Plugin<Project> {
           container.setPorts(ImmutableList.of("8080"));
         });
 
-    jib.getTo()
-        .setCredHelper(PathUtil.getExecutablePath(project, "docker-credential-gcr").toString());
+    jib.getTo().setCredHelper("docker-credential-gcr");
 
     var jar = project.getTasks().withType(Jar.class).named("jar");
     var nativeImage =

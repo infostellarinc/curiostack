@@ -24,7 +24,6 @@
 
 package org.curioswitch.gradle.golang;
 
-import java.nio.file.Path;
 import org.curioswitch.gradle.helpers.immutables.ExtensionStyle;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
@@ -75,7 +74,7 @@ public interface GolangExtension extends HasPublicType {
           .setPorts(objects.listProperty(Integer.class).empty())
           .setArgs(objects.listProperty(String.class).empty())
           .setWorkingDir(objects.property(String.class))
-          .setCredentialHelper(objects.property(Path.class))
+          .setCredentialHelper(objects.property(String.class))
           .setEnvironmentVariables(objects.mapProperty(String.class, String.class).empty());
     }
 
@@ -95,7 +94,7 @@ public interface GolangExtension extends HasPublicType {
 
     Property<String> getWorkingDir();
 
-    Property<Path> getCredentialHelper();
+    Property<String> getCredentialHelper();
 
     MapProperty<String, String> getEnvironmentVariables();
   }

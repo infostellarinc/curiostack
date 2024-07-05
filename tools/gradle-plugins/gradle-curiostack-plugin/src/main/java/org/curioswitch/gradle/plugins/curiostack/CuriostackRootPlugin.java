@@ -67,7 +67,6 @@ import nu.studer.gradle.jooq.JooqPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
-import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
 import org.curioswitch.gradle.plugins.curiostack.tasks.GenerateApiServerTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.SetupGitHooks;
@@ -357,12 +356,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
                     project
                         .getExtensions()
                         .getByType(GolangExtension.class)
-                        .jib(
-                            jib ->
-                                jib.getCredentialHelper()
-                                    .set(
-                                        PathUtil.getExecutablePath(
-                                            project, "docker-credential-gcr")));
+                        .jib(jib -> jib.getCredentialHelper().set("docker-credential-gcr"));
                   });
         });
 

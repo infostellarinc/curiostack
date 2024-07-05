@@ -31,7 +31,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.plugins.grpcapi.tasks.PackageWebTask;
 import org.curioswitch.gradle.plugins.nodejs.NodePlugin;
 import org.curioswitch.gradle.protobuf.ProtobufExtension;
@@ -84,7 +83,6 @@ public class GrpcApiPlugin implements Plugin<Project> {
 
     ProtobufExtension protobuf = project.getExtensions().getByType(ProtobufExtension.class);
 
-    protobuf.getProtoc().getArtifact().set("com.google.protobuf:protoc");
     protobuf
         .getLanguages()
         .register(
@@ -123,12 +121,6 @@ public class GrpcApiPlugin implements Plugin<Project> {
                 .register(
                     "grpc-web",
                     language -> {
-                      language
-                          .getPlugin()
-                          .getPath()
-                          .set(
-                              project.file(
-                                  PathUtil.getExecutablePath(project, "protoc-gen-grpc-web")));
                       language.option("import_style=commonjs+dts");
                       language.option("mode=grpcweb");
                       language.getOutputDir().set(project.file("build/webprotos"));
