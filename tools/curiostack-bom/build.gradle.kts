@@ -301,6 +301,7 @@ val DEPENDENCIES = listOf(
         "it.unimi.dsi:fastutil:8.5.13",
         "jakarta.activation:jakarta.activation-api:2.1.3",
         "jakarta.annotation:jakarta.annotation-api:3.0.0",
+        "javax.annotation:javax.annotation-api:1.3.2", // Old version still needed by some auto generated code
         "me.champeau.gradle:jmh-gradle-plugin:0.5.3", // Last update 2021-02-09
         "com.mysql:mysql-connector-j:8.4.0",
         "net.ltgt.gradle:gradle-errorprone-plugin:3.1.0",

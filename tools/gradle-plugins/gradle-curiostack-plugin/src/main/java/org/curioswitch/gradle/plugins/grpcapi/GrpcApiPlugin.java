@@ -80,6 +80,7 @@ public class GrpcApiPlugin implements Plugin<Project> {
     var config = GrpcExtension.createAndAdd(project);
 
     GRPC_DEPENDENCIES.forEach(dep -> project.getDependencies().add("api", "io.grpc:" + dep));
+    project.getDependencies().add("compileOnly", "javax.annotation:javax.annotation-api");
 
     ProtobufExtension protobuf = project.getExtensions().getByType(ProtobufExtension.class);
 
