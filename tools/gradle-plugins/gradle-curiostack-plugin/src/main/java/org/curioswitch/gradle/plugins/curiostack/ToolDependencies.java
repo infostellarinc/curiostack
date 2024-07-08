@@ -33,7 +33,7 @@ public class ToolDependencies {
 
   private static final Map<String, String> DEFAULT_VERSIONS =
       ImmutableMap.<String, String>builder()
-          .put("bom", "0.11.2")
+          .put("bom", "0.11.3")
           .put("google-java-format", "1.15.0")
           .put("gradle", "7.6.4")
           .build();

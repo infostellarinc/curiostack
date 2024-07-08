@@ -271,7 +271,7 @@ val DEPENDENCY_SETS = listOf(
         DependencySet(
                 "org.slf4j",
                 "2.0.13",
-                listOf("jul-to-slf4j", "slf4j-api")
+                listOf("jul-to-slf4j", "slf4j-api", "slf4j-simple")
         ),
         DependencySet(
                 "org.simpleflatmapper",

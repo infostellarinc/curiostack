@@ -643,11 +643,12 @@ public class CuriostackRootPlugin implements Plugin<Project> {
                         t -> {
                           for (String dependency :
                               ImmutableList.of(
-                                  "javax.activation:activation",
+                                  "jakarta.activation:jakarta.activation-api",
                                   "com.mysql:mysql-connector-j",
                                   // Not sure why this isn't automatically added.
                                   "com.google.guava:guava",
-                                  "com.google.cloud.sql:mysql-socket-factory-connector-j-8")) {
+                                  "com.google.cloud.sql:mysql-socket-factory-connector-j-8",
+                                  "org.slf4j:slf4j-simple")) {
                             project.getDependencies().add("jooqGenerator", dependency);
                           }
                         }));
