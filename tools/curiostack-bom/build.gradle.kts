@@ -216,12 +216,7 @@ val DEPENDENCY_SETS = listOf(
         DependencySet(
                 "org.assertj",
                 "3.25.3",
-                listOf("assertj-core")
-        ),
-        DependencySet(
-                "org.assertj",
-                "3.25.3",
-                listOf("assertj-guava")
+                listOf("assertj-core", "assertj-guava")
         ),
         DependencySet(
                 "org.awaitility",
@@ -232,11 +227,6 @@ val DEPENDENCY_SETS = listOf(
                 "org.bouncycastle",
                 "1.78.1",
                 listOf("bcpkix-jdk18on", "bcprov-jdk18on")
-        ),
-        DependencySet(
-                "org.checkerframework",
-                "3.43.0",
-                listOf("checker-qual")
         ),
         DependencySet(
                 "org.checkerframework",
