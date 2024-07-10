@@ -49,7 +49,7 @@ repositories {
 
 data class DependencySet(val group: String, val version: String, val modules: List<String>)
 
-val GRPC_VERSION = "1.64.0"
+val GRPC_VERSION = "1.65.0"
 val PROTOBUF_VERSION = "3.25.3" // 4.26.1
 
 val DEPENDENCY_BOMS = listOf(
@@ -95,7 +95,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "com.google.auto.value",
-                "1.10.4",
+                "1.11.0",
                 listOf("auto-value", "auto-value-annotations")
         ),
         DependencySet(
@@ -115,7 +115,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "com.google.cloud.sql",
-                "1.18.1",
+                "1.19.0",
                 listOf("mysql-socket-factory-connector-j-8")
         ),
         DependencySet(
@@ -215,7 +215,7 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.assertj",
-                "3.25.3",
+                "3.26.0",
                 listOf("assertj-core", "assertj-guava")
         ),
         DependencySet(
@@ -230,12 +230,12 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.checkerframework",
-                "3.43.0",
+                "3.45.0",
                 listOf("checker-qual")
         ),
         DependencySet(
                 "org.eclipse.jgit",
-                "6.9.0.202403050737-r",
+                "6.10.0.202406032230-r",
                 listOf("org.eclipse.jgit", "org.eclipse.jgit.ssh.apache", "org.eclipse.jgit.ssh.jsch")
         ),
         DependencySet(
@@ -245,12 +245,12 @@ val DEPENDENCY_SETS = listOf(
         ),
         DependencySet(
                 "org.jctools",
-                "4.0.3",
+                "4.0.5",
                 listOf("jctools-core")
         ),
         DependencySet(
                 "org.jooq",
-                "3.19.8",
+                "3.19.10",
                 listOf("jooq", "jooq-codegen", "jooq-meta")
         ),
         DependencySet(
@@ -280,9 +280,9 @@ val DEPENDENCIES = listOf(
         "com.google.code.gson:gson:2.11.0",
         "com.google.gradle:osdetector-gradle-plugin:1.7.3",
         "com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.2",
-        "com.gradle:gradle-enterprise-gradle-plugin:3.17.4",
+        "com.gradle:gradle-enterprise-gradle-plugin:3.17.5",
         "com.hubspot.jinjava:jinjava:2.7.2",
-        "com.uber.nullaway:nullaway:0.10.26",
+        "com.uber.nullaway:nullaway:0.11.0",
         "de.undercouch:gradle-download-task:5.6.0",
         "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:6.0.6", // Last update 2019-10-09
         "com.google.cloud.tools:jib-gradle-plugin:3.4.3",
