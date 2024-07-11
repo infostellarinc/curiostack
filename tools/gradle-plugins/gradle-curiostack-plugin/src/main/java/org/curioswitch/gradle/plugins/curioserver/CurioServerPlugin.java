@@ -86,7 +86,7 @@ public class CurioServerPlugin implements Plugin<Project> {
           container.setPorts(ImmutableList.of("8080"));
         });
 
-    jib.getTo().setCredHelper("docker-credential-gcr");
+    jib.getTo().setCredHelper("gcr");
 
     var jar = project.getTasks().withType(Jar.class).named("jar");
     var nativeImage =
