@@ -43,6 +43,8 @@ public interface ServerExtension extends HasPublicType {
   static ServerExtension createAndAdd(Project project) {
     var objects = project.getObjects();
 
+    Object javaRunnerImage =
+        project.getRootProject().findProperty("org.curioswitch.curiostack.java_runner");
     ModifiableServerExtension extension =
         project
             .getExtensions()
@@ -53,7 +55,10 @@ public interface ServerExtension extends HasPublicType {
             .setBaseImage(
                 objects
                     .property(String.class)
-                    .value("ghcr.io/curioswitch/java-cloud-runner:java16"));
+                    .value(
+                        javaRunnerImage != null
+                            ? (String) javaRunnerImage
+                            : "ghcr.io/curioswitch/java-cloud-runner:java16"));
     extension.setDeployments(
         project.container(
             AutoDeployment.class, name -> AutoDeployment.create(name, objects, extension)));
