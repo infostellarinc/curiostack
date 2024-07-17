@@ -50,7 +50,10 @@ repositories {
 data class DependencySet(val group: String, val version: String, val modules: List<String>)
 
 val GRPC_VERSION = "1.65.0"
-val PROTOBUF_VERSION = "3.25.3" // 4.26.1
+val PROTOBUF_VERSION = "3.25.3"
+// Newer versions of protobuf are currently not compatible with currently available newest version of grpc-java library
+// https://github.com/grpc/grpc-java/issues/11015
+// https://github.com/protocolbuffers/protobuf/issues/17247
 
 val DEPENDENCY_BOMS = listOf(
         "com.fasterxml.jackson:jackson-bom:2.17.1",
