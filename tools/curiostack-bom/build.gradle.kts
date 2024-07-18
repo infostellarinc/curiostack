@@ -56,21 +56,21 @@ val PROTOBUF_VERSION = "3.25.3"
 // https://github.com/protocolbuffers/protobuf/issues/17247
 
 val DEPENDENCY_BOMS = listOf(
-        "com.fasterxml.jackson:jackson-bom:2.17.1",
-        "com.google.cloud:google-cloud-bom:0.220.0",
-        "com.google.api-client:google-api-client-bom:2.5.1",
-        "com.google.guava:guava-bom:33.2.0-jre",
+        "com.fasterxml.jackson:jackson-bom:2.17.2",
+        "com.google.cloud:google-cloud-bom:0.224.0",
+        "com.google.api-client:google-api-client-bom:2.6.0",
+        "com.google.guava:guava-bom:33.2.1-jre",
         "com.google.http-client:google-http-client-bom:1.44.2",
         "com.google.protobuf:protobuf-bom:${PROTOBUF_VERSION}",
-        "com.linecorp.armeria:armeria-bom:1.28.4",
-        "io.dropwizard.metrics:metrics-bom:4.2.25",
+        "com.linecorp.armeria:armeria-bom:1.29.1",
+        "io.dropwizard.metrics:metrics-bom:4.2.26",
         "io.grpc:grpc-bom:${GRPC_VERSION}",
-        "io.micrometer:micrometer-bom:1.13.0",
+        "io.micrometer:micrometer-bom:1.13.2",
         "io.zipkin.brave:brave-bom:5.18.1", // 6.0.3
-        "io.netty:netty-bom:4.1.109.Final",
-        "org.apache.beam:beam-sdks-java-bom:2.56.0",
+        "io.netty:netty-bom:4.1.111.Final",
+        "org.apache.beam:beam-sdks-java-bom:2.57.0",
         "org.apache.logging.log4j:log4j-bom:2.23.1",
-        "org.junit:junit-bom:5.10.2",
+        "org.junit:junit-bom:5.10.3",
 )
 
 val DEPENDENCY_SETS = listOf(
@@ -297,7 +297,7 @@ val DEPENDENCIES = listOf(
         "javax.annotation:javax.annotation-api:1.3.2", // Old version still needed by some auto generated code
         "me.champeau.gradle:jmh-gradle-plugin:0.5.3", // Last update 2021-02-09
         "com.mysql:mysql-connector-j:8.4.0",
-        "net.ltgt.gradle:gradle-errorprone-plugin:3.1.0",
+        "net.ltgt.gradle:gradle-errorprone-plugin:4.0.1",
         "net.ltgt.gradle:gradle-nullaway-plugin:2.0.0",
         "nu.studer:gradle-jooq-plugin:7.1.1", // 9.0 - 8+ requires java and gradle upgrade
         "org.curioswitch.curiostack:protobuf-jackson:2.5.0",
