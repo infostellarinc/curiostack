@@ -564,16 +564,15 @@ public abstract class ServerModule {
 
     logger.info("Starting server");
     Server server = sb.build();
-    server
-        .start()
-        .whenComplete(
-            (unused, t) -> {
-              if (t != null) {
-                logger.error("Error starting server.", t);
-              } else {
-                logger.info("Server started on ports: " + server.activePorts());
-              }
-            });
+    CompletableFuture<Void> startFuture = server.start();
+    startFuture.whenComplete(
+        (unused, t) -> {
+          if (t != null) {
+            logger.error("Error starting server.", t);
+          } else {
+            logger.info("Server started on ports: " + server.activePorts());
+          }
+        });
 
     logger.info("Configuring shutdown hook");
     Runtime.getRuntime()
@@ -613,6 +612,8 @@ public abstract class ServerModule {
               monitoringConfig.getTraceReportInterval().getSeconds(),
               TimeUnit.SECONDS);
     }
+
+    startFuture.join();
 
     return server;
   }
