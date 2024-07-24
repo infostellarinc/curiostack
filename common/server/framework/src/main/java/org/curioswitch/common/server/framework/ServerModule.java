@@ -94,6 +94,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -349,6 +350,7 @@ public abstract class ServerModule {
     ServerBuilder sb = Server.builder().https(serverConfig.getPort());
 
     if (selfSignedCertificate.isPresent()) {
+      logger.info("Configuring self-signed SSL certificate");
       SelfSignedCertificate certificate = selfSignedCertificate.get();
       SslContextKeyConverter.execute(
           ResourceUtil.openStream(certificate.certificate().getAbsolutePath()),
@@ -368,6 +370,7 @@ public abstract class ServerModule {
           "No TLS configuration provided, Curiostack does not support non-TLS servers. "
               + "Use gradle-curio-cluster-plugin to set up a namespace and TLS.");
     } else {
+      logger.info("Configuring SSL certificate");
       SslContextKeyConverter.execute(
           ResourceUtil.openStream(serverConfig.getTlsCertificatePath()),
           ResourceUtil.openStream(serverConfig.getTlsPrivateKeyPath()),
@@ -381,6 +384,7 @@ public abstract class ServerModule {
           });
     }
 
+    logger.info("Applying server customizers");
     serverCustomizers.forEach(c -> c.accept(sb));
 
     Optional<Function<HttpService, IpFilteringService>> ipFilter = Optional.empty();
@@ -388,6 +392,7 @@ public abstract class ServerModule {
       ipFilter = Optional.of(IpFilteringService.newDecorator(serverConfig.getIpFilterRules()));
     }
 
+    logger.info("Configuring internal services");
     if (!serverConfig.isDisableDocService()) {
       DocServiceBuilder docService = DocService.builder();
       if (!authConfig.getServiceAccountBase64().isEmpty()) {
@@ -442,7 +447,9 @@ public abstract class ServerModule {
               .build();
     }
 
+    logger.info("Configuring GRPC services");
     for (GrpcServiceDefinition definition : grpcServiceDefinitions) {
+      logger.info("Configuring GRPC service {}", definition.path());
       GrpcServiceBuilder serviceBuilder =
           GrpcService.builder()
               .supportedSerializationFormats(GrpcSerializationFormats.values())
@@ -480,7 +487,9 @@ public abstract class ServerModule {
       }
     }
 
+    logger.info("Configuring HTTP services");
     for (HttpServiceDefinition definition : httpServiceDefinitions) {
+      logger.info("Configuring HTTP service {}", definition.route());
       sb.service(
           definition.route(),
           decorateService(
@@ -494,30 +503,39 @@ public abstract class ServerModule {
     }
 
     if (javascriptStaticConfig.getVersion() != 0) {
+      logger.info("Configuring JavaScript static service");
       sb.service(
           "/static/jsconfig-" + javascriptStaticConfig.getVersion(), javascriptStaticService.get());
     }
 
+    logger.info("Configuring static site services");
     for (StaticSiteServiceDefinition staticSite : staticSites) {
+      logger.info("Configuring static site service {}", staticSite.staticPath());
       StaticSiteService.addToServer(
           staticSite.urlRoot(), staticSite.staticPath(), staticSite.classpathRoot(), sb);
     }
 
     if (ipFilter.isPresent() && !serverConfig.getIpFilterInternalOnly()) {
+      logger.info("Configuring IP filter");
       sb.decorator(ipFilter.get());
     }
 
     if (securityConfig.getHttpsOnly()) {
+      logger.info("Configuring HTTPS only");
       sb.decorator(httpsOnlyServiceFactory.newDecorator());
     }
 
+    logger.info("Configuring logging");
     sb.decorator(loggingService);
+
+    logger.info("Configuring metrics");
     sb.meterRegistry(meterRegistry);
 
     if (serverConfig.getEnableGracefulShutdown()) {
       sb.gracefulShutdownTimeout(Duration.ofSeconds(10), Duration.ofSeconds(30));
     }
 
+    logger.info("Applying post server customizers");
     postServerCustomizers.forEach((c) -> c.accept(sb));
 
     sb.serverListener(
@@ -544,6 +562,7 @@ public abstract class ServerModule {
           }
         });
 
+    logger.info("Starting server");
     Server server = sb.build();
     server
         .start()
@@ -556,6 +575,7 @@ public abstract class ServerModule {
               }
             });
 
+    logger.info("Configuring shutdown hook");
     Runtime.getRuntime()
         .addShutdownHook(
             new Thread(
@@ -577,12 +597,14 @@ public abstract class ServerModule {
                 }));
 
     if (!fileWatcherBuilder.isEmpty()) {
+      logger.info("Starting file watcher");
       FileWatcher fileWatcher = fileWatcherBuilder.build();
       fileWatcher.start();
       Runtime.getRuntime().addShutdownHook(new Thread(fileWatcher::close));
     }
 
     if (monitoringConfig.isReportTraces()) {
+      logger.info("Configuring traces reporting");
       server
           .nextEventLoop()
           .scheduleAtFixedRate(
