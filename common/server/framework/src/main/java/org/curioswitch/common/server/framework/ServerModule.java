@@ -613,6 +613,10 @@ public abstract class ServerModule {
               TimeUnit.SECONDS);
     }
 
+    // This call to join() most likely should be outside of this Provider
+    // but given how much time it has already taken to track this down
+    // spending more time to make this cleaner is not a priority right now
+    // especially with all the Java services being slowly replaced with golang ones
     startFuture.join();
 
     return server;
