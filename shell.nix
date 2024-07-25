@@ -36,6 +36,10 @@ in
       # web plugin
       node
       pkgs.yarn
+
+      # shell tools
+      pkgs.gnused
+      pkgs.gnugrep
     ];
 
     shellHook = ''
