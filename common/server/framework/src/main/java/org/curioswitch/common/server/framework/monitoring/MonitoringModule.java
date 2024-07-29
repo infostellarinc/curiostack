@@ -136,7 +136,7 @@ public abstract class MonitoringModule {
         String value = gitProperties.getProperty(key);
         registry.register(key, (Gauge<String>) () -> value);
       }
-    } catch (IOException e) {
+    } catch (IOException | IllegalArgumentException e) {
       // git properties missing, ignore.
     }
   }
