@@ -49,6 +49,7 @@ in
       export CLOUDSDK_PYTHON_SITEPACKAGES=1
       export GOROOT="${go}/share/go"
       export GOPATH="$TEMP_DIR/gopath"
+      export JAVA_HOME="${java}/bin"
       export PATH="$(echo -n "$PATH" | tr ":" "\n" | grep -Fv /.gradle/curiostack/ | tr "\n" ":" | sed 's/:$//')"
     '';
   }
