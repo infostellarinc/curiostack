@@ -37,7 +37,7 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.workers.WorkerExecutor;
 
@@ -54,7 +54,7 @@ public class UploadCodeCovCacheTask extends DefaultTask {
     dest = getProject().getObjects().property(String.class);
   }
 
-  @InputFile
+  @InputFiles
   public File getCodeCovReportFile() {
     return getProject().file("build/codecov-report.txt");
   }
