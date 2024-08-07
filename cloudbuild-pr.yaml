@@ -76,10 +76,4 @@ steps:
     - GITHUB_PR_REMOTE_REF=refs/pull/$_PR_NUMBER/head
     - CLOUDBUILD_BUILD_ID=$BUILD_ID
     - GRADLE_USER_HOME=/root/.gradle
-  secretEnv:
-    - CODECOV_TOKEN
 timeout: 60m
-secrets:
-  - kmsKeyName: projects/curioswitch-cluster/locations/us-central1/keyRings/cloudbuild/cryptoKeys/github
-    secretEnv:
-      CODECOV_TOKEN: CiQAxdYgHOdQ5tY7WYjvBYlUsXk9g4GvELjEJZhEIFcxrkuDKY4STQA/OpLB7g9Gr8K5MZrwZXVDH/Ste1P6ZOFJl0TYILjU31c72w8Mmhde5JJv1VyEHW+67h8UARJHh6yOktrGFBU6wGzKDud0p6az3PoW

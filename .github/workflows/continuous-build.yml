@@ -48,7 +48,7 @@ jobs:
             notifications
             curiostack
       - name: Execute continuousBuild
-        run: ./gradlew continuousBuild --stacktrace -Porg.curioswitch.curiostack.ci.disableCoverage=true
+        run: ./gradlew continuousBuild --stacktrace
         shell: bash
         env:
           CI: true

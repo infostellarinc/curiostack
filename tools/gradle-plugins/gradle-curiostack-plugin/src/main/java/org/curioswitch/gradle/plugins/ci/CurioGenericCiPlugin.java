@@ -48,11 +48,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
-import org.curioswitch.gradle.golang.tasks.GoTestTask;
 import org.curioswitch.gradle.golang.tasks.JibTask;
-import org.curioswitch.gradle.plugins.ci.tasks.FetchCodeCovCacheTask;
-import org.curioswitch.gradle.plugins.ci.tasks.UploadCodeCovCacheTask;
-import org.curioswitch.gradle.plugins.ci.tasks.UploadToCodeCovTask;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -67,16 +63,12 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.UnknownTaskException;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaBasePlugin;
-import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
-import org.gradle.testing.jacoco.plugins.JacocoPlugin;
-import org.gradle.testing.jacoco.tasks.JacocoReport;
 
 public class CurioGenericCiPlugin implements Plugin<Project> {
 
@@ -246,72 +238,6 @@ public class CurioGenericCiPlugin implements Plugin<Project> {
       return;
     }
 
-    var fetchCodeCovCache =
-        project.getTasks().create("fetchCodeCovCache", FetchCodeCovCacheTask.class);
-
-    var uploadCodeCovCache =
-        project.getTasks().create("uploadCodeCovCache", UploadCodeCovCacheTask.class);
-
-    var uploadCoverage =
-        project
-            .getTasks()
-            .create(
-                "uploadToCodeCov",
-                UploadToCodeCovTask.class,
-                t -> {
-                  if (state.isMasterBuild()) {
-                    t.finalizedBy(uploadCodeCovCache);
-                  }
-                });
-
-    // Don't need to slow down local builds with coverage.
-    if (!state.isLocalBuild()
-        && !"true".equals(project.findProperty("org.curioswitch.curiostack.ci.disableCoverage"))) {
-      continuousBuild.dependsOn(uploadCoverage);
-
-      project.allprojects(
-          proj -> {
-            proj.getPlugins()
-                .withType(JavaPlugin.class, unused -> proj.getPlugins().apply(JacocoPlugin.class));
-
-            proj.getPlugins()
-                .withType(
-                    GolangPlugin.class,
-                    unused ->
-                        proj.getTasks()
-                            .withType(GoTestTask.class)
-                            .configureEach(
-                                t -> {
-                                  t.coverage(true);
-                                  uploadCoverage.mustRunAfter(t);
-                                }));
-          });
-
-      project.subprojects(
-          proj ->
-              proj.getPlugins()
-                  .withType(
-                      JacocoPlugin.class,
-                      unused -> {
-                        var testReport =
-                            proj.getTasks().named("jacocoTestReport", JacocoReport.class);
-                        uploadCoverage.mustRunAfter(testReport);
-                        testReport.configure(
-                            t ->
-                                t.reports(
-                                    reports -> {
-                                      reports.getXml().setEnabled(true);
-                                      reports.getHtml().setEnabled(true);
-                                      reports.getCsv().setEnabled(false);
-                                    }));
-                        try {
-                          proj.getTasks().named("build").configure(t -> t.dependsOn(testReport));
-                        } catch (UnknownTaskException e) {
-                          // Ignore.
-                        }
-                      }));
-    }
-
     final Set<Project> affectedProjects;
     try {
       affectedProjects = computeAffectedProjects(project);
@@ -327,9 +253,6 @@ public class CurioGenericCiPlugin implements Plugin<Project> {
       projectsToBuild = ImmutableSet.copyOf(project.getAllprojects());
     } else {
       projectsToBuild = affectedProjects;
-      // We only fetch the code cov cache on non-full builds since we don't need to propagate for
-      // full ones.
-      uploadCoverage.dependsOn(fetchCodeCovCache);
     }
 
     for (var proj : projectsToBuild) {

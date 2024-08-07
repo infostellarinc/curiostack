@@ -39,8 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import org.curioswitch.gradle.plugins.ci.tasks.FetchCodeCovCacheTask;
-import org.curioswitch.gradle.plugins.ci.tasks.UploadCodeCovCacheTask;
 import org.curioswitch.gradle.plugins.curioserver.CurioServerPlugin;
 import org.curioswitch.gradle.plugins.curioserver.ServerExtension;
 import org.curioswitch.gradle.plugins.gcloud.keys.KmsKeyDecrypter;
@@ -125,25 +123,6 @@ public class GcloudPlugin implements Plugin<Project> {
                     t -> {
                       t.dependsOn(gcloudLoginToCluster);
                     }));
-
-    project
-        .getTasks()
-        .withType(UploadCodeCovCacheTask.class)
-        .configureEach(
-            t ->
-                t.setDest(
-                    config
-                        .getBuildCacheStorageBucket()
-                        .map(value -> "gs://" + value + "/cloudbuild-cache-codecov.tar.gz")));
-    project
-        .getTasks()
-        .withType(FetchCodeCovCacheTask.class)
-        .configureEach(
-            t ->
-                t.setSrc(
-                    config
-                        .getBuildCacheStorageBucket()
-                        .map(value -> "gs://" + value + "/cloudbuild-cache-codecov.tar.gz")));
 
     project.allprojects(
         proj ->
