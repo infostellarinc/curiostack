@@ -273,6 +273,11 @@ val DEPENDENCY_SETS = listOf(
                         "sfm-converter", "sfm-jdbc", "sfm-jooq", "sfm-map", "sfm-reflect", "sfm-util"
                 )
         ),
+        DependencySet(
+                "org.flywaydb",
+                "6.5.7",
+                listOf("flyway-core", "flyway-gradle-plugin")
+        ),
 )
 
 val DEPENDENCIES = listOf(

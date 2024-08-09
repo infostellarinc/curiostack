@@ -52,7 +52,6 @@ dependencies {
     implementation("com.google.guava:guava")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties")
     implementation("com.hubspot.jinjava:jinjava")
-    implementation("gradle.plugin.com.boxfuse.client:gradle-plugin-publishing")
     implementation("com.google.cloud.tools:jib-gradle-plugin")
     implementation("gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin")
     implementation("me.champeau.gradle:jmh-gradle-plugin")
@@ -62,6 +61,7 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk18on")
     implementation("org.eclipse.jgit:org.eclipse.jgit")
     implementation("org.jsoup:jsoup")
+    implementation("org.flywaydb:flyway-gradle-plugin")
 
     // Prevent dependency hell for plugin users by specifying bom"d versions of grpc here
     runtimeOnly("io.grpc:grpc-core")
