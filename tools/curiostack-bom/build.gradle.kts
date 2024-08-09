@@ -291,11 +291,8 @@ val DEPENDENCIES = listOf(
         "com.gradle:gradle-enterprise-gradle-plugin:3.17.5",
         "com.hubspot.jinjava:jinjava:2.7.2",
         "com.uber.nullaway:nullaway:0.11.0",
-        "de.undercouch:gradle-download-task:5.6.0",
-        "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:6.0.6", // Last update 2019-10-09
         "com.google.cloud.tools:jib-gradle-plugin:3.4.3",
         "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0", // Last update 2017-04-25
-        "io.sgr:s2-geometry-library-java:1.0.1", // Last update 2019-07-29
         "it.unimi.dsi:fastutil:8.5.13",
         "jakarta.activation:jakarta.activation-api:2.1.3",
         "jakarta.annotation:jakarta.annotation-api:3.0.0",
