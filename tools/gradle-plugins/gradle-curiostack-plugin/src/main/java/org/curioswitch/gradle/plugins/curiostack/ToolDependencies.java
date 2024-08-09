@@ -35,7 +35,6 @@ public class ToolDependencies {
       ImmutableMap.<String, String>builder()
           .put("bom", "0.11.8")
           .put("google-java-format", "1.15.0")
-          .put("gradle", "7.6.4")
           .build();
 
   public static String getBomVersion(Project project) {
@@ -44,10 +43,6 @@ public class ToolDependencies {
 
   public static String getGoogleJavaFormatVersion(Project project) {
     return getVersion("google-java-format", project);
-  }
-
-  public static String getGradleVersion(Project project) {
-    return getVersion("gradle", project);
   }
 
   private static String getVersion(String tool, Project project) {

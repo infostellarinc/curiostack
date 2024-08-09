@@ -101,8 +101,6 @@ import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.javadoc.Javadoc;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat;
-import org.gradle.api.tasks.wrapper.Wrapper;
-import org.gradle.api.tasks.wrapper.Wrapper.DistributionType;
 import org.gradle.external.javadoc.CoreJavadocOptions;
 import org.gradle.plugins.ide.idea.IdeaPlugin;
 import org.gradle.plugins.ide.idea.model.IdeaModule;
@@ -229,21 +227,6 @@ public class CuriostackRootPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project rootProject) {
-    rootProject
-        .getGradle()
-        .getTaskGraph()
-        .whenReady(
-            tasks -> {
-              if (!rootProject
-                      .getGradle()
-                      .getGradleVersion()
-                      .equals(ToolDependencies.getGradleVersion(rootProject))
-                  && !tasks.hasTask(":wrapper")) {
-                throw new IllegalStateException(
-                    "Gradle wrapper out-of-date, run ./gradlew :wrapper");
-              }
-            });
-
     PluginContainer plugins = rootProject.getPlugins();
     // Provides useful tasks like 'clean', 'assemble' to the root project.
     plugins.apply(BasePlugin.class);
@@ -269,15 +252,6 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     }
 
     rootProject.getRepositories().mavenLocal();
-
-    rootProject
-        .getTasks()
-        .withType(Wrapper.class)
-        .configureEach(
-            wrapper -> {
-              wrapper.setGradleVersion(ToolDependencies.getGradleVersion(rootProject));
-              wrapper.setDistributionType(DistributionType.ALL);
-            });
 
     rootProject.getTasks().register("setupGitHooks", SetupGitHooks.class);
 
