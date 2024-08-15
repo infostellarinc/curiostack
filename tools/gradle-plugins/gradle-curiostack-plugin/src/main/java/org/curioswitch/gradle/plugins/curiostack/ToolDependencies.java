@@ -33,7 +33,7 @@ public class ToolDependencies {
 
   private static final Map<String, String> DEFAULT_VERSIONS =
       ImmutableMap.<String, String>builder()
-          .put("bom", "0.11.11")
+          .put("bom", "0.11.12")
           .put("google-java-format", "1.15.0")
           .build();
 
