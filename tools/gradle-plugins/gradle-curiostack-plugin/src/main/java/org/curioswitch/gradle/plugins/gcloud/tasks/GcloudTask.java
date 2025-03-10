@@ -25,12 +25,7 @@
 package org.curioswitch.gradle.plugins.gcloud.tasks;
 
 import com.google.common.collect.ImmutableList;
-import java.nio.file.Path;
-import java.util.List;
-import org.apache.tools.ant.taskdefs.condition.Os;
 import org.curioswitch.gradle.plugins.gcloud.GcloudExtension;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
@@ -39,15 +34,11 @@ import org.gradle.api.tasks.TaskAction;
 /** A {@link org.gradle.api.Task} that executes a gcloud sdk command. */
 public class GcloudTask extends DefaultTask {
 
-  private static final String COMMAND = "gcloud";
-
   private final ListProperty<Object> args;
 
   @SuppressWarnings("ConstructorLeaksThis")
   public GcloudTask() {
     args = getProject().getObjects().listProperty(Object.class).empty();
-
-    dependsOn(DownloadToolUtil.getSetupTask(getProject(), "gcloud"));
   }
 
   public void setArgs(Iterable<?> args) {
@@ -67,28 +58,18 @@ public class GcloudTask extends DefaultTask {
     GcloudExtension config =
         getProject().getRootProject().getExtensions().getByType(GcloudExtension.class);
 
-    var toolManager = DownloadedToolManager.get(getProject());
+    ImmutableList.Builder<Object> fullArgs =
+        ImmutableList.builder().add("--project=" + config.getClusterProject().get()).add("--quiet");
 
-    String command = Os.isFamily(Os.FAMILY_WINDOWS) ? COMMAND + ".cmd" : COMMAND;
-    Path executable = toolManager.getBinDir("gcloud").resolve(command);
-    List<Object> fullArgs =
-        ImmutableList.builder()
-            .add("--project=" + config.getClusterProject().get())
-            .add("--quiet")
-            .addAll(
-                args.get().stream().map(o -> o instanceof Provider ? ((Provider) o).get() : o)
-                    ::iterator)
-            .build();
+    args.get().stream()
+        .map(o -> o instanceof Provider ? ((Provider<?>) o).get() : o)
+        .forEachOrdered(fullArgs::add);
+
     getProject()
         .exec(
             exec -> {
-              exec.executable(executable);
-              exec.args(fullArgs);
-
-              toolManager.addAllToPath(exec);
-              exec.environment(
-                  "CLOUDSDK_PYTHON", toolManager.getBinDir("miniconda-build").resolve("python"));
-              exec.environment("CLOUDSDK_PYTHON_SITEPACKAGES", "1");
+              exec.executable("gcloud");
+              exec.args(fullArgs.build());
               exec.setStandardInput(System.in);
             });
   }

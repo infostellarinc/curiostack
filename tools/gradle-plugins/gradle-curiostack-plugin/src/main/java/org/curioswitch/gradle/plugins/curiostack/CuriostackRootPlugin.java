@@ -39,8 +39,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 import groovy.util.Node;
-import groovy.util.XmlParser;
 import groovy.xml.QName;
+import groovy.xml.XmlParser;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -62,32 +62,19 @@ import net.ltgt.gradle.errorprone.ErrorProneOptions;
 import net.ltgt.gradle.errorprone.ErrorPronePlugin;
 import net.ltgt.gradle.nullaway.NullAwayOptions;
 import net.ltgt.gradle.nullaway.NullAwayPlugin;
+import nu.studer.gradle.jooq.JooqGenerate;
 import nu.studer.gradle.jooq.JooqPlugin;
-import nu.studer.gradle.jooq.JooqTask;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.curioswitch.gradle.conda.CondaBuildEnvPlugin;
-import org.curioswitch.gradle.conda.CondaExtension;
-import org.curioswitch.gradle.conda.CondaPlugin;
 import org.curioswitch.gradle.golang.GolangExtension;
 import org.curioswitch.gradle.golang.GolangPlugin;
-import org.curioswitch.gradle.golang.GolangSetupPlugin;
-import org.curioswitch.gradle.golang.tasks.JibTask;
-import org.curioswitch.gradle.plugins.aws.AwsSetupPlugin;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
-import org.curioswitch.gradle.plugins.curiostack.tasks.CreateShellConfigTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.GenerateApiServerTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.SetupGitHooks;
-import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateGradleWrapperTask;
-import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateIntelliJSdksTask;
 import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateProjectSettingsTask;
 import org.curioswitch.gradle.plugins.gcloud.GcloudPlugin;
 import org.curioswitch.gradle.plugins.nodejs.NodePlugin;
 import org.curioswitch.gradle.plugins.nodejs.util.NodeUtil;
-import org.curioswitch.gradle.plugins.terraform.TerraformSetupPlugin;
 import org.curioswitch.gradle.release.ReleasePlugin;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.ToolDownloaderPlugin;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -95,6 +82,7 @@ import org.gradle.api.XmlProvider;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ResolutionStrategy;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
+import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.attributes.java.TargetJvmVersion;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.ExtensionAware;
@@ -113,8 +101,6 @@ import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.javadoc.Javadoc;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat;
-import org.gradle.api.tasks.wrapper.Wrapper;
-import org.gradle.api.tasks.wrapper.Wrapper.DistributionType;
 import org.gradle.external.javadoc.CoreJavadocOptions;
 import org.gradle.plugins.ide.idea.IdeaPlugin;
 import org.gradle.plugins.ide.idea.model.IdeaModule;
@@ -241,81 +227,33 @@ public class CuriostackRootPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project rootProject) {
-    rootProject
-        .getGradle()
-        .getTaskGraph()
-        .whenReady(
-            tasks -> {
-              if (!rootProject
-                      .getGradle()
-                      .getGradleVersion()
-                      .equals(ToolDependencies.getGradleVersion(rootProject))
-                  && !tasks.hasTask(":wrapper")) {
-                throw new IllegalStateException(
-                    "Gradle wrapper out-of-date, run ./gradlew :wrapper");
-              }
-            });
-
     PluginContainer plugins = rootProject.getPlugins();
     // Provides useful tasks like 'clean', 'assemble' to the root project.
     plugins.apply(BasePlugin.class);
-
-    plugins.apply(AwsSetupPlugin.class);
-    plugins.apply(CondaBuildEnvPlugin.class);
     plugins.apply(CurioGenericCiPlugin.class);
     plugins.apply(GcloudPlugin.class);
     plugins.apply(IdeaPlugin.class);
     plugins.apply(NodePlugin.class);
     plugins.apply(ReleasePlugin.class);
-    plugins.apply(TerraformSetupPlugin.class);
-    plugins.apply(ToolDownloaderPlugin.class);
+    plugins.apply("com.google.cloud.artifactregistry.gradle-plugin");
 
-    rootProject.getRepositories().mavenCentral();
+    rootProject
+        .getRepositories()
+        .mavenCentral(
+            repository ->
+                repository.content(
+                    content ->
+                        content.excludeModuleByRegex(
+                            "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+
+    var privateRepositoryUrl = rootProject.findProperty("org.curioswitch.curiostack.repo_uri");
+    if (privateRepositoryUrl != null) {
+      rootProject.getRepositories().maven(repository -> repository.setUrl(privateRepositoryUrl));
+    }
+
     rootProject.getRepositories().mavenLocal();
 
-    var updateGradleWrapper =
-        rootProject.getTasks().register("curioUpdateWrapper", UpdateGradleWrapperTask.class);
-
-    rootProject
-        .getTasks()
-        .withType(Wrapper.class)
-        .configureEach(
-            wrapper -> {
-              wrapper.setGradleVersion(ToolDependencies.getGradleVersion(rootProject));
-              wrapper.setDistributionType(DistributionType.ALL);
-
-              wrapper.finalizedBy(updateGradleWrapper);
-            });
-
     rootProject.getTasks().register("setupGitHooks", SetupGitHooks.class);
-    var updateShellConfig =
-        rootProject.getTasks().register("updateShellConfig", CreateShellConfigTask.class);
-    DownloadToolUtil.getDownloadTask(rootProject, "miniconda-build")
-        .configure(t -> t.finalizedBy(updateShellConfig));
-    rootProject
-        .getTasks()
-        .named("condaInstallPackagesMinicondaBuild", t -> t.mustRunAfter(updateShellConfig));
-
-    var updateIntelliJJdks =
-        rootProject
-            .getTasks()
-            .register(
-                UpdateIntelliJSdksTask.NAME,
-                UpdateIntelliJSdksTask.class,
-                t -> t.dependsOn(updateGradleWrapper));
-
-    var idea = rootProject.getTasks().named("idea");
-    idea.configure(task -> task.dependsOn(updateIntelliJJdks));
-
-    rootProject
-        .getTasks()
-        .register(
-            "setup",
-            t -> {
-              t.dependsOn(idea);
-              t.dependsOn(rootProject.getTasks().named("toolsSetupAll"));
-              t.dependsOn(updateShellConfig);
-            });
 
     var updateProjectSettings =
         rootProject.getTasks().register("updateProjectSettings", UpdateProjectSettingsTask.class);
@@ -392,65 +330,35 @@ public class CuriostackRootPlugin implements Plugin<Project> {
                     project
                         .getExtensions()
                         .getByType(GolangExtension.class)
-                        .jib(
-                            jib ->
-                                jib.getCredentialHelper()
-                                    .set(
-                                        DownloadedToolManager.get(project)
-                                            .getBinDir("gcloud")
-                                            .resolve("docker-credential-gcr")));
-
-                    project
-                        .getTasks()
-                        .withType(JibTask.class)
-                        .configureEach(
-                            t ->
-                                t.dependsOn(
-                                    project.getRootProject().getTasks().getByName("gcloudSetup")));
+                        .jib(jib -> jib.getCredentialHelper().set("docker-credential-gcr"));
                   });
         });
 
     setupDataSources(rootProject);
 
-    rootProject
-        .getPlugins()
-        .withType(
-            GolangSetupPlugin.class,
-            unused ->
-                rootProject
-                    .getPlugins()
-                    .withType(
-                        ToolDownloaderPlugin.class,
-                        plugin ->
-                            plugin
-                                .tools()
-                                .named("go")
-                                .configure(
-                                    tool ->
-                                        tool.getVersion()
-                                            .set(ToolDependencies.getGolangVersion(rootProject)))));
-
-    rootProject
-        .getPlugins()
-        .withType(
-            CondaPlugin.class,
-            plugin ->
-                plugin
-                    .getCondas()
-                    .withType(CondaExtension.class)
-                    .named("miniconda-build")
-                    .configure(
-                        conda ->
-                            conda
-                                .getVersion()
-                                .set(ToolDependencies.getMinicondaVersion(rootProject))));
-
     setupSpotless(rootProject);
   }
 
   private static void setupRepositories(Project project) {
-    project.getRepositories().gradlePluginPortal();
-    project.getRepositories().mavenCentral();
+    RepositoryHandler repositories = project.getRepositories();
+    repositories.gradlePluginPortal(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+    repositories.mavenCentral(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+
+    var privateRepositoryUrl =
+        project.getRootProject().findProperty("org.curioswitch.curiostack.repo_uri");
+    if (privateRepositoryUrl != null) {
+      repositories.maven(repository -> repository.setUrl(privateRepositoryUrl));
+    }
   }
 
   private static void setupJavaProject(
@@ -704,17 +612,18 @@ public class CuriostackRootPlugin implements Plugin<Project> {
             unused ->
                 project
                     .getTasks()
-                    .withType(JooqTask.class)
+                    .withType(JooqGenerate.class)
                     .configureEach(
                         t -> {
                           for (String dependency :
                               ImmutableList.of(
-                                  "javax.activation:activation",
-                                  "mysql:mysql-connector-java",
+                                  "jakarta.activation:jakarta.activation-api",
+                                  "com.mysql:mysql-connector-j",
                                   // Not sure why this isn't automatically added.
                                   "com.google.guava:guava",
-                                  "com.google.cloud.sql:mysql-socket-factory")) {
-                            project.getDependencies().add("jooqRuntime", dependency);
+                                  "com.google.cloud.sql:mysql-socket-factory-connector-j-8",
+                                  "org.slf4j:slf4j-simple")) {
+                            project.getDependencies().add("jooqGenerator", dependency);
                           }
                         }));
 
@@ -882,7 +791,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
     Configuration configuration = project.getConfigurations().create("jdbcDrivers");
     project
         .getDependencies()
-        .add(configuration.getName(), "com.google.cloud.sql:mysql-socket-factory");
+        .add(configuration.getName(), "com.google.cloud.sql:mysql-socket-factory-connector-j-8");
     project
         .getTasks()
         .register(
@@ -1016,7 +925,7 @@ public class CuriostackRootPlugin implements Plugin<Project> {
             .orElseGet(
                 () -> inspectionManager.appendNode("profile", ImmutableMap.of("version", "1.0")));
     setOption(profile, "myName", "Project Default");
-    Node updated =
+    var unused =
         findChild(
                 profile,
                 n -> n.name().equals("inspection_tool") && "Eslint".equals(n.attribute("class")))

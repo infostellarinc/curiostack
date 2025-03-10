@@ -23,5 +23,4 @@
  */
 
 include(":java-library1")
-include(":terraform")
 include(":web1")

@@ -191,24 +191,31 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     }
 
     /** Builder for {@link SingularField}. */
-    @CanIgnoreReturnValue
     @AutoValue.Builder
     abstract static class Builder {
+      @CanIgnoreReturnValue
       abstract Builder setResult(Result result);
 
+      @CanIgnoreReturnValue
       abstract Builder setFieldDescriptorOrUnknown(
           FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
 
+      @CanIgnoreReturnValue
       abstract Builder setFieldName(String fieldName);
 
+      @CanIgnoreReturnValue
       abstract Builder setActual(Object actual);
 
+      @CanIgnoreReturnValue
       abstract Builder setExpected(Object expected);
 
+      @CanIgnoreReturnValue
       abstract Builder setBreakdown(DiffResult breakdown);
 
+      @CanIgnoreReturnValue
       abstract Builder setUnknownsBreakdown(UnknownFieldSetDiff unknownsBreakdown);
 
+      @CanIgnoreReturnValue
       abstract SingularField build();
     }
   }
@@ -387,23 +394,30 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         return new AutoValue_DiffResult_RepeatedField_PairResult.Builder();
       }
 
-      @CanIgnoreReturnValue
       @AutoValue.Builder
       abstract static class Builder {
+        @CanIgnoreReturnValue
         abstract Builder setResult(Result result);
 
+        @CanIgnoreReturnValue
         abstract Builder setFieldDescriptor(FieldDescriptor fieldDescriptor);
 
+        @CanIgnoreReturnValue
         abstract Builder setActualFieldIndex(int actualFieldIndex);
 
+        @CanIgnoreReturnValue
         abstract Builder setExpectedFieldIndex(int expectedFieldIndex);
 
+        @CanIgnoreReturnValue
         abstract Builder setActual(Object actual);
 
+        @CanIgnoreReturnValue
         abstract Builder setExpected(Object expected);
 
+        @CanIgnoreReturnValue
         abstract Builder setBreakdown(DiffResult breakdown);
 
+        @CanIgnoreReturnValue
         abstract PairResult build();
       }
     }
@@ -447,23 +461,28 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       return new AutoValue_DiffResult_RepeatedField.Builder();
     }
 
-    @CanIgnoreReturnValue
     @AutoValue.Builder
     abstract static class Builder {
+      @CanIgnoreReturnValue
       abstract Builder setFieldDescriptor(FieldDescriptor fieldDescriptor);
 
+      @CanIgnoreReturnValue
       abstract Builder setActual(Iterable<?> actual);
 
+      @CanIgnoreReturnValue
       abstract Builder setExpected(Iterable<?> expected);
 
       @ForOverride
+      @CanIgnoreReturnValue
       abstract ImmutableList.Builder<PairResult> pairResultsBuilder();
 
+      @CanIgnoreReturnValue
       final Builder addPairResult(PairResult pairResult) {
         pairResultsBuilder().add(pairResult);
         return this;
       }
 
+      @CanIgnoreReturnValue
       abstract RepeatedField build();
     }
   }
@@ -514,26 +533,31 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       return new AutoValue_DiffResult_UnknownFieldSetDiff.Builder();
     }
 
-    @CanIgnoreReturnValue
     @AutoValue.Builder
     abstract static class Builder {
+      @CanIgnoreReturnValue
       abstract Builder setActual(UnknownFieldSet actual);
 
+      @CanIgnoreReturnValue
       abstract Builder setExpected(UnknownFieldSet expected);
 
       @ForOverride
+      @CanIgnoreReturnValue
       abstract ImmutableListMultimap.Builder<Integer, SingularField> singularFieldsBuilder();
 
+      @CanIgnoreReturnValue
       final Builder addSingularField(int fieldNumber, SingularField singularField) {
         singularFieldsBuilder().put(fieldNumber, singularField);
         return this;
       }
 
+      @CanIgnoreReturnValue
       final Builder addAllSingularFields(int fieldNumber, Iterable<SingularField> singularFields) {
         singularFieldsBuilder().putAll(fieldNumber, singularFields);
         return this;
       }
 
+      @CanIgnoreReturnValue
       abstract UnknownFieldSetDiff build();
     }
   }
@@ -635,7 +659,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
   private static String valueString(FieldDescriptor fieldDescriptor, Object o) {
     StringBuilder sb = new StringBuilder();
     try {
-      TextFormat.printFieldValue(fieldDescriptor, o, sb);
+      TextFormat.printer().printFieldValue(fieldDescriptor, o, sb);
       return sb.toString();
     } catch (IOException impossible) {
       throw new AssertionError(impossible);
@@ -652,36 +676,44 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     }
   }
 
-  @CanIgnoreReturnValue
   @AutoValue.Builder
   abstract static class Builder {
+    @CanIgnoreReturnValue
     abstract Builder setActual(Message actual);
 
+    @CanIgnoreReturnValue
     abstract Builder setExpected(Message expected);
 
     @ForOverride
+    @CanIgnoreReturnValue
     abstract ImmutableListMultimap.Builder<Integer, SingularField> singularFieldsBuilder();
 
+    @CanIgnoreReturnValue
     final Builder addSingularField(int fieldNumber, SingularField singularField) {
       singularFieldsBuilder().put(fieldNumber, singularField);
       return this;
     }
 
+    @CanIgnoreReturnValue
     final Builder addAllSingularFields(int fieldNumber, Iterable<SingularField> singularFields) {
       singularFieldsBuilder().putAll(fieldNumber, singularFields);
       return this;
     }
 
     @ForOverride
+    @CanIgnoreReturnValue
     abstract ImmutableListMultimap.Builder<Integer, RepeatedField> repeatedFieldsBuilder();
 
+    @CanIgnoreReturnValue
     final Builder addRepeatedField(int fieldNumber, RepeatedField repeatedField) {
       repeatedFieldsBuilder().put(fieldNumber, repeatedField);
       return this;
     }
 
+    @CanIgnoreReturnValue
     abstract Builder setUnknownFields(UnknownFieldSetDiff unknownFields);
 
+    @CanIgnoreReturnValue
     abstract DiffResult build();
   }
 }

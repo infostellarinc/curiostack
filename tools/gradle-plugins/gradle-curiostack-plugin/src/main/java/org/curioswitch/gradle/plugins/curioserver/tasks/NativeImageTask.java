@@ -29,7 +29,6 @@ import com.google.common.collect.Streams;
 import java.io.File;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
@@ -101,10 +100,7 @@ public class NativeImageTask extends DefaultTask {
     getProject()
         .exec(
             exec -> {
-              exec.executable(
-                  DownloadedToolManager.get(getProject())
-                      .getBinDir("graalvm")
-                      .resolve("native-image"));
+              exec.executable("native-image");
               var args = new ImmutableList.Builder<String>();
               args.add(
                       "-cp",

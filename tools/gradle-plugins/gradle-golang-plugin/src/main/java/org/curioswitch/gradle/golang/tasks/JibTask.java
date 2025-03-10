@@ -44,10 +44,10 @@ import com.google.cloud.tools.jib.api.Containerizer;
 import com.google.cloud.tools.jib.api.ImageReference;
 import com.google.cloud.tools.jib.api.Jib;
 import com.google.cloud.tools.jib.api.JibContainerBuilder;
-import com.google.cloud.tools.jib.api.LayerConfiguration;
 import com.google.cloud.tools.jib.api.LogEvent;
 import com.google.cloud.tools.jib.api.RegistryImage;
 import com.google.cloud.tools.jib.api.buildplan.AbsoluteUnixPath;
+import com.google.cloud.tools.jib.api.buildplan.FileEntriesLayer;
 import com.google.cloud.tools.jib.api.buildplan.FilePermissions;
 import com.google.cloud.tools.jib.api.buildplan.Port;
 import com.google.cloud.tools.jib.event.events.ProgressEvent;
@@ -85,7 +85,7 @@ public class JibTask extends DefaultTask {
   private final ListProperty<Integer> ports;
   private final ListProperty<String> args;
   private final Property<String> workingDir;
-  private final Property<Path> credentialHelper;
+  private final Property<String> credentialHelper;
   private final MapProperty<String, String> environmentVariables;
 
   public JibTask() {
@@ -100,7 +100,7 @@ public class JibTask extends DefaultTask {
     ports = objects.listProperty(Integer.class);
     args = objects.listProperty(String.class);
     workingDir = objects.property(String.class);
-    credentialHelper = objects.property(Path.class);
+    credentialHelper = objects.property(String.class);
     environmentVariables = objects.mapProperty(String.class, String.class);
 
     var jib = getProject().getExtensions().getByType(GolangExtension.class).getJib();
@@ -204,8 +204,8 @@ public class JibTask extends DefaultTask {
     additionalTags.get().forEach(containerize::withAdditionalTag);
     JibContainerBuilder jib =
         Jib.from(baseImage)
-            .addLayer(
-                LayerConfiguration.builder()
+            .addFileEntriesLayer(
+                FileEntriesLayer.builder()
                     .addEntry(
                         exePath,
                         AbsoluteUnixPath.get("/opt/bin/" + exePath.getFileName()),

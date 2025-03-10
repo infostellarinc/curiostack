@@ -35,33 +35,19 @@ import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import org.curioswitch.gradle.conda.CondaPlugin;
-import org.curioswitch.gradle.conda.ModifiableCondaExtension;
-import org.curioswitch.gradle.helpers.task.TaskUtil;
-import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
-import org.curioswitch.gradle.plugins.ci.tasks.FetchCodeCovCacheTask;
-import org.curioswitch.gradle.plugins.ci.tasks.UploadCodeCovCacheTask;
 import org.curioswitch.gradle.plugins.curioserver.CurioServerPlugin;
 import org.curioswitch.gradle.plugins.curioserver.ServerExtension;
-import org.curioswitch.gradle.plugins.curiostack.ToolDependencies;
 import org.curioswitch.gradle.plugins.gcloud.keys.KmsKeyDecrypter;
-import org.curioswitch.gradle.plugins.gcloud.tasks.FetchToolCacheTask;
 import org.curioswitch.gradle.plugins.gcloud.tasks.GcloudTask;
 import org.curioswitch.gradle.plugins.gcloud.tasks.KubectlTask;
-import org.curioswitch.gradle.plugins.gcloud.tasks.UploadToolCacheTask;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.ToolDownloaderPlugin;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Rule;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
-import org.gradle.api.provider.Provider;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
 import org.immutables.value.Value.Style.BuilderVisibility;
@@ -85,44 +71,6 @@ public class GcloudPlugin implements Plugin<Project> {
 
     project.getExtensions().getExtraProperties().set("keys", new KmsKeyDecrypter(project));
 
-    project
-        .getPlugins()
-        .withType(
-            ToolDownloaderPlugin.class,
-            plugin ->
-                plugin.registerToolIfAbsent(
-                    "gcloud",
-                    tool -> {
-                      tool.getArtifact().set("google-cloud-sdk");
-                      tool.getVersion().set(ToolDependencies.getGcloudVersion(project));
-                      tool.getBaseUrl()
-                          .set("https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/");
-                      tool.getArtifactPattern().set("[artifact]-[revision]-[classifier].[ext]");
-                      tool.getPathSubDirs().add("google-cloud-sdk/bin");
-
-                      var osClassifiers = tool.getOsClassifiers();
-                      osClassifiers.getLinux().set("linux-x86_64");
-                      osClassifiers.getMac().set("darwin-x86_64");
-                      osClassifiers.getWindows().set("windows-x86_64");
-                    }));
-    DownloadToolUtil.getSetupTask(project, "gcloud")
-        .configure(t -> t.dependsOn(DownloadToolUtil.getSetupTask(project, "miniconda-build")));
-
-    project
-        .getPlugins()
-        .withType(
-            CondaPlugin.class,
-            plugin ->
-                plugin
-                    .getCondas()
-                    .withType(ModifiableCondaExtension.class)
-                    .named("miniconda-build")
-                    .configure(
-                        conda -> {
-                          conda.getPackages().add("lz4-c");
-                          conda.getPythonPackages().add("crcmod");
-                        }));
-
     ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties();
     ext.set(GcloudTask.class.getSimpleName(), GcloudTask.class);
 
@@ -145,22 +93,6 @@ public class GcloudPlugin implements Plugin<Project> {
               }
             });
 
-    var gcloudSetup = project.getTasks().register("gcloudSetup");
-    var gcloudInstallComponents =
-        project
-            .getTasks()
-            .register(
-                "gcloudInstallComponents",
-                GcloudTask.class,
-                t ->
-                    t.setArgs(
-                        ImmutableList.of(
-                            "components",
-                            "install",
-                            "app-engine-python",
-                            "beta",
-                            "kubectl",
-                            "docker-credential-gcr")));
     var gcloudLoginToCluster =
         project
             .getTasks()
@@ -189,27 +121,8 @@ public class GcloudPlugin implements Plugin<Project> {
                 .withType(KubectlTask.class)
                 .configureEach(
                     t -> {
-                      t.dependsOn(gcloudInstallComponents, gcloudLoginToCluster);
+                      t.dependsOn(gcloudLoginToCluster);
                     }));
-
-    project
-        .getTasks()
-        .withType(UploadCodeCovCacheTask.class)
-        .configureEach(
-            t ->
-                t.setDest(
-                    config
-                        .getBuildCacheStorageBucket()
-                        .map(value -> "gs://" + value + "/cloudbuild-cache-codecov.tar.gz")));
-    project
-        .getTasks()
-        .withType(FetchCodeCovCacheTask.class)
-        .configureEach(
-            t ->
-                t.setSrc(
-                    config
-                        .getBuildCacheStorageBucket()
-                        .map(value -> "gs://" + value + "/cloudbuild-cache-codecov.tar.gz")));
 
     project.allprojects(
         proj ->
@@ -228,92 +141,6 @@ public class GcloudPlugin implements Plugin<Project> {
                                       value ->
                                           value + "/" + config.getClusterProject().get() + "/"));
                     }));
-
-    project.afterEvaluate(
-        p -> {
-          if (System.getenv("CI") != null
-              && project.getGradle().getStartParameter().isBuildCacheEnabled()) {
-            project
-                .getPlugins()
-                .withType(ToolDownloaderPlugin.class)
-                .all(
-                    plugin ->
-                        plugin
-                            .tools()
-                            .all(
-                                tool -> {
-                                  Provider<String> toolCachePath =
-                                      config
-                                          .getBuildCacheStorageBucket()
-                                          .map(
-                                              value ->
-                                                  "gs://"
-                                                      + value
-                                                      + "/cloudbuild-cache-tool-"
-                                                      + tool.getName()
-                                                      + ".tar.lz4");
-
-                                  var downloadCache =
-                                      project
-                                          .getTasks()
-                                          .register(
-                                              "toolsFetchCache"
-                                                  + TaskUtil.toTaskSuffix(tool.getName()),
-                                              FetchToolCacheTask.class,
-                                              t -> {
-                                                t.setSrc(toolCachePath);
-                                                t.onlyIf(
-                                                    unused ->
-                                                        !Files.exists(
-                                                            DownloadedToolManager.get(project)
-                                                                .getCuriostackDir()
-                                                                .resolve(tool.getName())));
-                                              });
-
-                                  var uploadCache =
-                                      project
-                                          .getTasks()
-                                          .register(
-                                              "toolsUploadCache"
-                                                  + TaskUtil.toTaskSuffix(tool.getName()),
-                                              UploadToolCacheTask.class,
-                                              t -> {
-                                                t.setDest(toolCachePath);
-                                                t.srcPath(tool.getName());
-                                                tool.getAdditionalCachedDirs()
-                                                    .get()
-                                                    .forEach(t::srcPath);
-                                              });
-
-                                  DownloadToolUtil.getDownloadTask(project, tool.getName())
-                                      .configure(t -> t.dependsOn(downloadCache));
-
-                                  // We disable cache upload by default and only enable it if a
-                                  // setup task was run.
-                                  uploadCache.configure(
-                                      uc ->
-                                          uc.setOnlyIf(
-                                              unused ->
-                                                  "true".equals(System.getenv("CI_MASTER"))
-                                                      && DownloadToolUtil.getSetupTask(
-                                                              project, tool.getName())
-                                                          .get()
-                                                          .getDidWork()));
-
-                                  project
-                                      .getPlugins()
-                                      .withType(
-                                          CurioGenericCiPlugin.class,
-                                          unused ->
-                                              project
-                                                  .getTasks()
-                                                  .named("continuousBuild")
-                                                  .configure(cb -> cb.finalizedBy(uploadCache)));
-                                }));
-          }
-
-          gcloudSetup.configure(t -> t.dependsOn(gcloudInstallComponents));
-        });
 
     addGenerateCloudBuildTask(project, config);
   }

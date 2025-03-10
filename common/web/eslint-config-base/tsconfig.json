@@ -1,6 +1,0 @@
-{
-  "extends": "@curiostack/tsconfig",
-  "include": [
-    "src/**/*"
-  ]
-}

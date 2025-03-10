@@ -27,6 +27,7 @@ package org.curioswitch.gradle.plugins.curiostack;
 import org.curioswitch.gradle.plugins.gcloud.GcloudBuildCachePlugin;
 import org.curioswitch.gradle.plugins.gcloud.buildcache.CloudStorageBuildCache;
 import org.gradle.api.Plugin;
+import org.gradle.api.Project;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.initialization.Settings;
 
@@ -35,8 +36,6 @@ public class CuriostackPlugin implements Plugin<Settings> {
   @Override
   public void apply(Settings settings) {
     var config = CuriostackExtension.createAndAdd(settings);
-
-    configureRepositories(settings.getBuildscript().getRepositories());
 
     settings.getPlugins().apply(GcloudBuildCachePlugin.class);
 
@@ -60,13 +59,28 @@ public class CuriostackPlugin implements Plugin<Settings> {
         .getGradle()
         .rootProject(
             project -> {
-              configureRepositories(project.getBuildscript().getRepositories());
+              configureRepositories(project, project.getBuildscript().getRepositories());
               project.getPlugins().apply(CuriostackRootPlugin.class);
             });
   }
 
-  private static void configureRepositories(RepositoryHandler repositories) {
-    repositories.gradlePluginPortal();
-    repositories.mavenLocal();
+  private static void configureRepositories(Project project, RepositoryHandler repositories) {
+    repositories.gradlePluginPortal(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+    repositories.mavenLocal(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
+
+    var privateRepositoryUri = project.findProperty("org.curioswitch.curiostack.repo_uri");
+    if (privateRepositoryUri != null) {
+      repositories.maven(repository -> repository.setUrl(privateRepositoryUri));
+    }
   }
 }

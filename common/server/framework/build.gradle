@@ -24,6 +24,7 @@
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 archivesBaseName = 'curio-server-framework'
 
@@ -46,11 +47,12 @@ dependencies {
     api 'io.dropwizard.metrics:metrics-core'
     api 'io.grpc:grpc-core'
     api 'io.lettuce:lettuce-core'
-    api 'io.micrometer:micrometer-registry-prometheus'
+    api 'io.micrometer:micrometer-registry-prometheus-simpleclient'
     api 'io.zipkin.brave:brave'
     api 'org.apache.logging.log4j:log4j-api'
     api 'org.jooq:jooq'
     api 'org.simpleflatmapper:sfm-jooq'
+    api 'jakarta.xml.bind:jakarta.xml.bind-api'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
@@ -58,7 +60,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.github.ben-manes.caffeine:caffeine'
     implementation 'com.google.protobuf:protobuf-java'
-    implementation 'com.linecorp.armeria:armeria-brave'
+    implementation 'com.linecorp.armeria:armeria-brave5'
     implementation 'com.linecorp.armeria:armeria-grpc'
     implementation 'com.zaxxer:HikariCP'
     implementation 'io.zipkin.brave:brave-instrumentation-mysql8'
@@ -72,13 +74,13 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core'
     implementation 'org.apache.logging.log4j:log4j-jcl'
     implementation 'org.apache.logging.log4j:log4j-jul'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
-    implementation 'org.bouncycastle:bcpkix-jdk15on'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl'
+    implementation 'org.bouncycastle:bcpkix-jdk18on'
     implementation 'org.jctools:jctools-core'
     implementation 'org.ow2.asm:asm:9.2'
 
-    runtimeOnly 'com.google.cloud.sql:mysql-socket-factory'
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.google.cloud.sql:mysql-socket-factory-connector-j-8'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     annotationProcessor 'com.google.auto.factory:auto-factory'
     compileOnly 'com.google.auto.factory:auto-factory'
@@ -95,13 +97,18 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            url rootProject.findProperty("org.curioswitch.curiostack.repo_uri")
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
                 name = 'Curio Server Framework'
                 description = 'A server framework to make it simple to create a ' +
                         'production-ready, API server or web service in Java.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/server/framework'
             }
         }

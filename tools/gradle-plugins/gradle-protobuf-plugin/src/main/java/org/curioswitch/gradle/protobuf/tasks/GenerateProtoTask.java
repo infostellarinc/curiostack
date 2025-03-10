@@ -193,13 +193,14 @@ public class GenerateProtoTask extends DefaultTask {
 
     Map<String, File> downloadedTools = downloadTools(artifacts.build());
 
-    File protocPath =
-        protocArtifact.isPresent()
-            ? checkNotNull(downloadedTools.get(protocArtifact.get()))
-            : this.protocPath.get();
-
     ImmutableList.Builder<String> protocCommand = ImmutableList.builder();
-    protocCommand.add(protocPath.getAbsolutePath());
+    if (protocArtifact.isPresent()) {
+      protocCommand.add(checkNotNull(downloadedTools.get(protocArtifact.get())).getAbsolutePath());
+    } else if (this.protocPath.isPresent()) {
+      protocCommand.add(this.protocPath.get().getAbsolutePath());
+    } else {
+      protocCommand.add("protoc");
+    }
 
     for (LanguageSettings language : languages) {
       String optionsPrefix = optionsPrefix(language.getOptions().getOrElse(ImmutableList.of()));
@@ -267,7 +268,12 @@ public class GenerateProtoTask extends DefaultTask {
     List<ArtifactRepository> currentRepositories = ImmutableList.copyOf(repositories);
     // Make sure Maven Central is present as a repository since it's the usual place to
     // get protoc, even for non-Java projects. We restore to the previous state after the task.
-    repositories.mavenCentral();
+    repositories.mavenCentral(
+        repository ->
+            repository.content(
+                content ->
+                    content.excludeModuleByRegex(
+                        "org\\.curioswitch\\..*", "(?!protobuf-jackson)")));
 
     List<Dependency> dependencies =
         artifacts.stream()

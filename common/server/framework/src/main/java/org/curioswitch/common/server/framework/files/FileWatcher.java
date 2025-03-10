@@ -89,6 +89,11 @@ public class FileWatcher implements AutoCloseable {
       ImmutableMap.Builder<WatchKey, Path> watchedDirsBuilder = ImmutableMap.builder();
       for (Map.Entry<Path, Consumer<Path>> entry : registeredPaths.entrySet()) {
         Path dir = entry.getKey().getParent();
+        if (dir == null) {
+          logger.warn("Watch path doesn't have a parent, skipping");
+          continue;
+        }
+
         WatchKey key =
             dir.register(
                 watchService,

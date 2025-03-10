@@ -33,80 +33,16 @@ public class ToolDependencies {
 
   private static final Map<String, String> DEFAULT_VERSIONS =
       ImmutableMap.<String, String>builder()
-          .put("awscli", "2.2.27")
-          .put("bom", "0.9.1")
-          .put("claat", "2.2.0")
-          .put("gcloud", "351.0.0")
-          .put("golang", "1.16.7")
+          .put("bom", "0.11.13")
           .put("google-java-format", "1.15.0")
-          .put("gradle", "7.4.1")
-          .put("miniconda", "Miniconda3-py39_4.10.3")
-          .put("node", "14.17.4")
-          .put("openjdk", "17")
-          .put("pulumi", "3.9.1")
-          .put("terraform", "1.0.4")
-          .put("terraform-gsuite-provider", "0.1.62")
-          .put("yarn", "1.22.5")
           .build();
-
-  public static String getAwsCliVersion(Project project) {
-    return getVersion("awscli", project);
-  }
 
   public static String getBomVersion(Project project) {
     return getVersion("bom", project);
   }
 
-  public static String getClaatVersion(Project project) {
-    return getVersion("claat", project);
-  }
-
-  public static String getGcloudVersion(Project project) {
-    return getVersion("gcloud", project);
-  }
-
   public static String getGoogleJavaFormatVersion(Project project) {
     return getVersion("google-java-format", project);
-  }
-
-  public static String getGradleVersion(Project project) {
-    return getVersion("gradle", project);
-  }
-
-  public static String getGolangVersion(Project project) {
-    return getVersion("golang", project);
-  }
-
-  public static String getMinicondaVersion(Project project) {
-    return getVersion("miniconda", project);
-  }
-
-  public static String getNodeVersion(Project project) {
-    return getVersion("node", project);
-  }
-
-  public static String getOpenJdkVersion(Project project) {
-    return getVersion("openjdk", project);
-  }
-
-  public static String getPulumiVersion(Project project) {
-    return getVersion("pulumi", project);
-  }
-
-  public static String getTerraformVersion(Project project) {
-    return getVersion("terraform", project);
-  }
-
-  public static String getTerraformGsuiteProviderVersion(Project project) {
-    return getVersion("terraform-gsuite-provider", project);
-  }
-
-  public static String getYarnVersion(Project project) {
-    return getVersion("yarn", project);
-  }
-
-  public static String getDefaultVersion(String tool) {
-    return DEFAULT_VERSIONS.getOrDefault(tool, "");
   }
 
   private static String getVersion(String tool, Project project) {

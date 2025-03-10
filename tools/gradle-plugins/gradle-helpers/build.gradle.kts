@@ -22,9 +22,12 @@
  * SOFTWARE.
  */
 
+import java.net.URI
+
 plugins {
     `java-library`
     `maven-publish`
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
@@ -42,9 +45,14 @@ publishing {
             pom {
                 name.set("Gradle Helpers")
                 description.set("Helpers used in all curiostack plugins.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/tools/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/tools/" +
                         "gradle-plugins/gradle-helpers")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

@@ -77,15 +77,13 @@ public class ProtobufPlugin implements Plugin<Project> {
                   .all(
                       sourceSet -> {
                         if (sourceSet.getName().equals(SourceSet.MAIN_SOURCE_SET_NAME)) {
-                          configureExtractIncludeTask(
-                              mainTasks.extractIncludeProtos(), sourceSet, project);
+                          configureExtractIncludeTask(mainTasks.extractIncludeProtos(), sourceSet);
                           configureSourceSetOutput(
                               sourceSet, mainTasks.generateProto(), extension, project);
                         } else {
                           SourceSetTasks tasks =
                               configureSourceSet(sourceSet.getName(), project, extension);
-                          configureExtractIncludeTask(
-                              tasks.extractIncludeProtos(), sourceSet, project);
+                          configureExtractIncludeTask(tasks.extractIncludeProtos(), sourceSet);
                           configureSourceSetOutput(
                               sourceSet, tasks.generateProto(), extension, project);
                         }
@@ -134,7 +132,7 @@ public class ProtobufPlugin implements Plugin<Project> {
   }
 
   private static void configureExtractIncludeTask(
-      TaskProvider<ExtractProtosTask> task, SourceSet sourceSet, Project project) {
+      TaskProvider<ExtractProtosTask> task, SourceSet sourceSet) {
     task.configure(
         t -> {
           t.getFiles().from(sourceSet.getCompileClasspath());

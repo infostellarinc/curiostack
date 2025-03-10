@@ -99,7 +99,7 @@ public class GoogleCredentialsDecoratingClient extends SimpleDecoratingHttpClien
     // if (ctx.additionalRequestHeaders().contains(header) || req.headers().contains(header)) {
     //  return delegate().execute(ctx, req);
     // }
-    return HttpResponse.from(
+    return HttpResponse.of(
         (type == TokenType.ACCESS_TOKEN
                 ? accessTokenProvider.getAccessToken()
                 : accessTokenProvider.getGoogleIdToken())

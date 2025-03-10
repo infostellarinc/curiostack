@@ -26,16 +26,12 @@ package org.curioswitch.gradle.plugins.curiostack;
 
 import static org.curioswitch.gradle.testing.assertj.CurioGradleAssertions.assertThat;
 
-import com.google.common.io.Resources;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.curioswitch.gradle.plugins.curiostack.tasks.UpdateIntelliJSdksTask;
 import org.curioswitch.gradle.testing.ResourceProjects;
 import org.gradle.testkit.runner.GradleRunner;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -52,27 +48,6 @@ class CuriostackRootPluginTest {
     void copyProject() {
       projectDir =
           ResourceProjects.fromResources("test-projects/gradle-curiostack-plugin/kitchen-sink");
-    }
-
-    @Test
-    // TODO(choko): Enable after figuring out how to mock AdoptOpenJDK API.
-    @Disabled
-    void updatesWrapper() throws Exception {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments("wrapper")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":wrapper", ":curioUpdateWrapper");
-
-      assertThat(Files.readAllLines(projectDir.resolve("gradlew")))
-          .contains(". ./gradle/get-jdk.sh");
-      assertThat(projectDir.resolve("gradle/get-jdk.sh"))
-          .hasContent(
-              Resources.toString(
-                  Resources.getResource("gradle-wrapper/rendered-get-jdk.sh"),
-                  StandardCharsets.UTF_8));
     }
 
     @Test
@@ -98,33 +73,6 @@ class CuriostackRootPluginTest {
                 assertThat(dependency.selectFirst("artifactId").text()).isNotEmpty();
                 assertThat(dependency.selectFirst("version").text()).isNotEmpty();
               });
-    }
-
-    @Test
-    // This test is slow since it downloads a file, just run locally for now.
-    @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
-    void terraformInstallsKubectl() {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(":terraform:terraformInit", "--stacktrace")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":gcloudInstallComponents", ":terraform:terraformInit");
-    }
-
-    @Test
-    void terraformConvertsConfigs() {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(":terraform:terraformConvertConfigs", "--stacktrace")
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":terraform:terraformConvertConfigs");
-
-      assertThat(projectDir.resolve("terraform/build/terraform/dummy.tf.json")).exists();
-      assertThat(projectDir.resolve("terraform/build/terraform/dummy2.tf")).exists();
     }
 
     @Test
@@ -159,42 +107,6 @@ class CuriostackRootPluginTest {
                   .withPluginClasspath())
           .builds()
           .tasksDidSucceed(":updateNodeResolutions");
-    }
-  }
-
-  @SuppressWarnings("ClassCanBeStatic")
-  @Nested
-  // Temporarily disable to investigate build failures.
-  @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
-  class ConfiguresIntelliJProject {
-
-    private Path projectDir;
-
-    @BeforeAll
-    void copyProject() {
-      projectDir =
-          ResourceProjects.fromResources("test-projects/gradle-curiostack-plugin/kitchen-sink");
-    }
-
-    @Test
-    void normal() throws Exception {
-      assertThat(
-              GradleRunner.create()
-                  .withProjectDir(projectDir.toFile())
-                  .withArguments(
-                      "idea", "-xtoolsDownloadOpenjdk", "-x" + UpdateIntelliJSdksTask.NAME)
-                  .withPluginClasspath())
-          .builds()
-          .tasksDidSucceed(":idea");
-
-      final Path projectFile;
-      try (var s = Files.list(projectDir)) {
-        projectFile = s.filter(p -> p.toString().endsWith(".ipr")).findFirst().get();
-      }
-
-      // Make sure copyright is escaped correctly.
-      assertThat(Files.readString(projectFile))
-          .contains("<option name=\"notice\" value=\"MIT License&#10;&#10;Copyright");
     }
   }
 }

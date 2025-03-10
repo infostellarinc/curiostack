@@ -32,14 +32,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.gorylenko.GitPropertiesPlugin;
 import java.util.Set;
-import org.curioswitch.gradle.helpers.platform.PathUtil;
 import org.curioswitch.gradle.helpers.task.TaskUtil;
 import org.curioswitch.gradle.plugins.ci.CiState;
 import org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin;
 import org.curioswitch.gradle.plugins.curioserver.tasks.NativeImageTask;
 import org.curioswitch.gradle.plugins.gcloud.tasks.KubectlTask;
-import org.curioswitch.gradle.tooldownloader.DownloadedToolManager;
-import org.curioswitch.gradle.tooldownloader.util.DownloadToolUtil;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.ApplicationPlugin;
@@ -57,8 +54,6 @@ public class CurioServerPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project project) {
-    project.getRootProject().getPlugins().apply(CurioServerSetupPlugin.class);
-
     project.getPlugins().apply(ApplicationPlugin.class);
     project.getPlugins().apply(GitPropertiesPlugin.class);
     project.getPlugins().apply(JibPlugin.class);
@@ -83,7 +78,6 @@ public class CurioServerPlugin implements Plugin<Project> {
             BuildImageTask.class,
             t -> {
               t.dependsOn(project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME));
-              t.dependsOn(project.getRootProject().getTasks().getByName("gcloudSetup"));
             });
 
     jib.container(
@@ -92,12 +86,7 @@ public class CurioServerPlugin implements Plugin<Project> {
           container.setPorts(ImmutableList.of("8080"));
         });
 
-    jib.getTo()
-        .setCredHelper(
-            DownloadedToolManager.get(project)
-                .getBinDir("gcloud")
-                .resolve(PathUtil.getExeName("docker-credential-gcr"))
-                .toString());
+    jib.getTo().setCredHelper("gcr");
 
     var jar = project.getTasks().withType(Jar.class).named("jar");
     var nativeImage =
@@ -114,7 +103,7 @@ public class CurioServerPlugin implements Plugin<Project> {
                               .named(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME));
                   t.getJarFile().set(jar.get().getOutputs().getFiles().getSingleFile());
 
-                  t.dependsOn(jar, DownloadToolUtil.getSetupTask(project, "graalvm"));
+                  t.dependsOn(jar);
                 });
 
     CurioGenericCiPlugin.addToMasterBuild(project, jibTask);

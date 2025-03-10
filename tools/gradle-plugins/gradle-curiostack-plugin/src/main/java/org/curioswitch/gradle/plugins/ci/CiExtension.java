@@ -50,8 +50,7 @@ public interface CiExtension extends HasPublicType {
         .create(NAME, ModifiableCiExtension.class)
         .setReleaseTagPrefixes(
             project.container(
-                ReleaseTagSettings.class, name -> ReleaseTagSettings.create(name, objects)))
-        .setCodeCoverageExcludedProjects(project.getObjects().listProperty(String.class).empty());
+                ReleaseTagSettings.class, name -> ReleaseTagSettings.create(name, objects)));
   }
 
   default CiExtension releaseTagPrefixes(
@@ -61,8 +60,6 @@ public interface CiExtension extends HasPublicType {
   }
 
   NamedDomainObjectContainer<ReleaseTagSettings> getReleaseTagPrefixes();
-
-  ListProperty<String> getCodeCoverageExcludedProjects();
 
   @Modifiable
   @ExtensionStyle

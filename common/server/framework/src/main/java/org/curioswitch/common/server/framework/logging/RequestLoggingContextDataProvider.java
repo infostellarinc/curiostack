@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2018 Choko (choko@curioswitch.org)
+ * Copyright (c) 2024 Choko (choko@curioswitch.org)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,24 @@
  * SOFTWARE.
  */
 
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
-apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
+package org.curioswitch.common.server.framework.logging;
 
-archivesBaseName = 'armeria-google-cloud-trace'
+import com.linecorp.armeria.common.Flags;
+import java.util.Map;
+import org.apache.logging.log4j.core.util.ContextDataProvider;
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+public class RequestLoggingContextDataProvider implements ContextDataProvider {
 
-dependencies {
-    api project(':common:google-cloud:core')
-
-    api 'com.google.api.grpc:grpc-google-cloud-trace-v2'
-
-    annotationProcessor 'com.google.dagger:dagger-compiler'
-    compileOnly 'com.google.dagger:dagger'
-}
-
-publishing {
-    repositories {
-        maven {
-            url rootProject.findProperty("org.curioswitch.curiostack.repo_uri")
-        }
+  @Override
+  public Map<String, String> supplyContextData() {
+    // After updating armeria sometimes Flags are not yet fully initialized
+    // when trying to retrieve the context, and it causes unrecoverable initialization errors
+    //noinspection ConstantValue
+    if (Flags.requestContextStorageProvider() == null
+        || Flags.requestContextLeakDetectionSampler() == null) {
+      return null;
     }
-    publications {
-        maven(MavenPublication) {
-            pom {
-                name = 'armeria-google-cloud-storage'
-                description = 'A Stackdriver Trace client, based on Armeria.'
-                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
-                        'common/google-cloud/armeria-google-cloud-trace'
-            }
-        }
-    }
+
+    return RequestLoggingContext.get();
+  }
 }

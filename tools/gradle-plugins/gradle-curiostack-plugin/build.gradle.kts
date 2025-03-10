@@ -24,23 +24,22 @@
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.net.URI
 
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-
-    id("com.gradle.plugin-publish")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 
 dependencies {
     implementation(project(":common:google-cloud:cloud-storage"))
-    implementation(project(":tools:gradle-plugins:gradle-conda-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-golang-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-protobuf-plugin"))
     implementation(project(":tools:gradle-plugins:gradle-helpers"))
     implementation(project(":tools:gradle-plugins:gradle-release-plugin"))
-    implementation(project(":tools:gradle-plugins:gradle-tool-downloader-plugin"))
 
+    implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin")
     implementation("com.bmuschko:gradle-docker-plugin")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
@@ -53,26 +52,24 @@ dependencies {
     implementation("com.google.guava:guava")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties")
     implementation("com.hubspot.jinjava:jinjava")
-    implementation("gradle.plugin.com.boxfuse.client:gradle-plugin-publishing")
-    implementation("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin")
+    implementation("com.google.cloud.tools:jib-gradle-plugin")
     implementation("gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin")
-    implementation("io.fabric8:kubernetes-client")
     implementation("me.champeau.gradle:jmh-gradle-plugin")
-    implementation("net.adoptopenjdk:net.adoptopenjdk.v3.api")
-    implementation("net.adoptopenjdk:net.adoptopenjdk.v3.vanilla")
     implementation("net.ltgt.gradle:gradle-errorprone-plugin")
     implementation("net.ltgt.gradle:gradle-nullaway-plugin")
     implementation("nu.studer:gradle-jooq-plugin")
-    implementation("org.bouncycastle:bcpkix-jdk15on")
+    implementation("org.bouncycastle:bcpkix-jdk18on")
     implementation("org.eclipse.jgit:org.eclipse.jgit")
+    implementation("org.jsoup:jsoup")
+    implementation("org.flywaydb:flyway-gradle-plugin")
 
     // Prevent dependency hell for plugin users by specifying bom"d versions of grpc here
     runtimeOnly("io.grpc:grpc-core")
     runtimeOnly("io.grpc:grpc-netty-shaded")
 
     // Flyway plugin uses the gradle classpath, so adding this allows flyway to access cloud sql.
-    runtimeOnly("com.google.cloud.sql:mysql-socket-factory")
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.google.cloud.sql:mysql-socket-factory-connector-j-8")
+    runtimeOnly("com.mysql:mysql-connector-j")
 
     compileOnly(project(":common:curio-helpers"))
 
@@ -95,12 +92,6 @@ gradlePlugin {
             displayName = "Gradle Curio CI Plugin"
             description = "Plugin which adds a monorepo aware continuousBuild task for efficiently building on continuous integration"
             implementationClass = "org.curioswitch.gradle.plugins.ci.CurioGenericCiPlugin"
-        }
-        register("codelabs") {
-            id = "org.curioswitch.gradle-codelabs-plugin"
-            displayName = "Gradle Codelabs Plugin"
-            description = "Plugin to build codelabs using claat"
-            implementationClass = "org.curioswitch.gradle.plugins.codelabs.CodelabsPlugin"
         }
         register("curiostack") {
             id = "org.curioswitch.gradle-curiostack-plugin"
@@ -135,12 +126,6 @@ gradlePlugin {
             description = "Plugin for invoking NodeJS"
             implementationClass = "org.curioswitch.gradle.plugins.nodejs.NodePlugin"
         }
-        register("pulumi") {
-            id = "org.curioswitch.gradle-pulumi-plugin"
-            displayName = "Gradle Pulumi Plugin"
-            description = "Plugin for invoking Pulumi"
-            implementationClass = "org.curioswitch.gradle.plugins.pulumi.PulumiPlugin"
-        }
         register("server") {
             id = "org.curioswitch.gradle-curio-server-plugin"
             displayName = "Gradle Curio Server Plugin"
@@ -153,12 +138,6 @@ gradlePlugin {
             description = "Plugin for deploying static sites to app engine and firebase"
             implementationClass = "org.curioswitch.gradle.plugins.staticsite.StaticSitePlugin"
         }
-        register("terraform") {
-            id = "org.curioswitch.gradle-terraform-plugin"
-            displayName = "Gradle Terraform Plugin"
-            description = "Plugin for executing terraform, including extra features such as configuration templating and yaml config support"
-            implementationClass = "org.curioswitch.gradle.plugins.terraform.TerraformPlugin"
-        }
         register("web") {
             id = "org.curioswitch.gradle-curio-web-plugin"
             displayName = "Gradle Curio Web Plugin"
@@ -166,12 +145,6 @@ gradlePlugin {
             implementationClass = "org.curioswitch.gradle.plugins.curioweb.CurioWebPlugin"
         }
     }
-}
-
-pluginBundle {
-    website = "https://github.com/curioswitch/curiostack/tree/master/tools/gradle-plugins/gradle-curiostack-plugin"
-    vcsUrl = "https://github.com/curioswitch/curiostack.git"
-    tags = listOf("curiostack", "gradle")
 }
 
 publishing {
@@ -183,9 +156,14 @@ publishing {
                         "using Curiostack conventions. Defines shared configuration and " +
                         "applies other useful plugins in an aim to be the only plugin in a " +
                         "root project.")
-                url.set("https://github.com/curioswitch/curiostack/tree/master/" +
+                url.set("https://github.com/infostellarinc/curiostack/tree/master/" +
                         "tools/gradle-plugins/gradle-curiostack-plugin")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = URI(rootProject.findProperty("org.curioswitch.curiostack.repo_uri") as String)
         }
     }
 }

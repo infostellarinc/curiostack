@@ -24,7 +24,7 @@
 
 package org.curioswitch.common.testing.auth.firebase;
 
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.firebase.auth.FirebaseTestTrampoline;
 import com.google.firebase.auth.FirebaseToken;
 
@@ -33,7 +33,7 @@ public class FirebaseTestUtil {
 
   /** Parses a serialized {@link FirebaseToken} without verification. */
   public static FirebaseToken parse(String serialized) {
-    return FirebaseTestTrampoline.parseToken(JacksonFactory.getDefaultInstance(), serialized);
+    return FirebaseTestTrampoline.parseToken(GsonFactory.getDefaultInstance(), serialized);
   }
 
   private FirebaseTestUtil() {}

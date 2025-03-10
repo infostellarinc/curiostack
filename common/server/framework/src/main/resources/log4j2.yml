@@ -33,6 +33,6 @@ Configuration:
 
   Loggers:
     Root:
-      level: info
+      level: "${env:LOG4J_LEVEL:-${sys:log4j.level:-info}}"
       AppenderRef:
       - ref: Console_Appender

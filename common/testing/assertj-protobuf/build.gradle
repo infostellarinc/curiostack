@@ -24,6 +24,7 @@
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 apply plugin: 'org.curioswitch.gradle-grpc-api-plugin'
 
@@ -39,16 +40,21 @@ dependencies {
     annotationProcessor 'com.google.auto.value:auto-value'
     compileOnly 'com.google.auto.value:auto-value-annotations'
 
-    compileOnly 'org.checkerframework:checker-compat-qual'
+    compileOnly 'org.checkerframework:checker-qual'
 }
 
 publishing {
+    repositories {
+        maven {
+            url rootProject.findProperty("org.curioswitch.curiostack.repo_uri")
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
                 name = 'assertj-protobuf'
                 description = 'An assertj extension for fine-grained assertions on protobuf messages.'
-                url = 'https://github.com/curioswitch/curiostack/tree/master/' +
+                url = 'https://github.com/infostellarinc/curiostack/tree/master/' +
                         'common/testing/assertj-protobuf'
             }
         }
